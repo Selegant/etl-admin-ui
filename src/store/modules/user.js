@@ -2,6 +2,7 @@ import Vue from 'vue'
 import { login, getInfo, logout } from '@/api/login'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { welcome } from '@/utils/util'
+import { builder } from '@/mock/util'
 
 const user = {
   state: {
@@ -37,6 +38,7 @@ const user = {
     Login ({ commit }, userInfo) {
       return new Promise((resolve, reject) => {
         login(userInfo).then(response => {
+          response = builder(response.data, response.message, response.code, response.headers)
           const result = response.result
           Vue.ls.set(ACCESS_TOKEN, result.token, 7 * 24 * 60 * 60 * 1000)
           commit('SET_TOKEN', result.token)
@@ -51,6 +53,8 @@ const user = {
     GetInfo ({ commit }) {
       return new Promise((resolve, reject) => {
         getInfo().then(response => {
+          response = builder(response.data, response.message, response.code, response.headers)
+          console.log(response)
           const result = response.result
 
           if (result.role && result.role.permissions.length > 0) {
