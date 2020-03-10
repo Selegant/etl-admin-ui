@@ -2,7 +2,8 @@ import { axios } from '@/utils/request'
 
 const api = {
   jobLogPageList: 'joblog/pageList',
-  jobInfoSelectList: 'jobinfo/selectInfo'
+  jobInfoSelectList: 'jobinfo/selectInfo',
+  jobLogDetailCat: 'joblog/logDetailCat'
 }
 
 export default api
@@ -23,10 +24,10 @@ export function getJobInfoSelectList (parameter) {
   })
 }
 
-export function getServiceList (parameter) {
+export function jobLogDetailCat (parameter) {
   return axios({
-    url: api.service,
-    method: 'get',
+    url: api.jobLogDetailCat,
+    method: 'post',
     params: parameter
   })
 }

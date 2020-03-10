@@ -32,21 +32,15 @@
       <span slot="addressType" slot-scope="text">
         {{ text | addressTypeFilter }}
       </span>
+      <span slot="addressList" slot-scope="text">
+        <a-tag v-if="text!='' && text!=null" color="green">{{ text }}</a-tag>
+        <span v-else ></span>
+      </span>
       <span slot="action" slot-scope="record">
         <template>
-          <a-dropdown>
-            <a-menu slot="overlay">
-              <a-menu-item @click="$refs.executeForm.execute(record)">执行一次</a-menu-item>
-              <a-menu-item @click="queryLog(record)">查询日志</a-menu-item>
-              <a-menu-item key="3">注册节点</a-menu-item>
-              <a-menu-item @click="getNextTriggerTime(record)">下次执行时间</a-menu-item>
-              <a-menu-item v-if="record.triggerStatus===0" @click="startTask(record)">启动</a-menu-item>
-              <a-menu-item v-if="record.triggerStatus===1" @click="stopTask(record)">停止</a-menu-item>
-              <a-menu-item @click="$refs.taskEditForm.edit(record,jobGroupList)">编辑</a-menu-item>
-              <a-menu-item key="7">删除</a-menu-item>
-            </a-menu>
-            <a-button> 操作 <a-icon type="down" /> </a-button>
-          </a-dropdown>
+          <a-button type="primary" size="small" icon="form" @click="edit(record)">编辑</a-button>
+          <a-divider type="vertical" />
+          <a-button type="danger" size="small" icon="delete" @click="del(record)">删除</a-button>
         </template>
       </span>
     </s-table>
@@ -65,7 +59,7 @@ import StepByStepModal from './modules/StepByStepModal'
 import CreateForm from './modules/CreateForm'
 import TaskEditForm from './modules/TaskEditForm'
 import ExecuteForm from './modules/ExecuteForm'
-import { jobGroupPageList } from '@/api/group'
+import { jobGroupPageList, jobGroupRemove } from '@/api/group'
 import TagSelectOption from '../../components/TagSelect/TagSelectOption'
 
 const addressTypeMap = {
@@ -90,6 +84,8 @@ export default {
   },
   data () {
     return {
+      // 列表循环器
+      listTimer: null,
       mdl: {},
       // 高级搜索 展开/关闭
       advanced: false,
@@ -119,12 +115,13 @@ export default {
         },
         {
           title: 'OnLine 机器地址',
-          dataIndex: 'author'
+          dataIndex: 'addressList',
+          scopedSlots: { customRender: 'addressList' }
         },
         {
           title: '操作',
           // dataIndex: 'action',
-          width: '150px',
+          width: '250px',
           scopedSlots: { customRender: 'action' }
         }
       ],
@@ -156,16 +153,29 @@ export default {
     }
   },
   created () {
+    this.queryParam.id = this.$route.query.id
     this.tableOption()
-    this.loadSelectInfo()
-    // getRoleList({ t: new Date() })
+    this.startPolling()
+  },
+  beforeDestroy () {
+    if (this.listTimer) {
+      window.clearInterval(this.listTimer)
+    }
   },
   methods: {
-    executeOnce (e) {
-      console.log(e)
+    edit (e) {
+
     },
-    queryLog (e) {
-      console.log(e)
+    del (e) {
+      jobGroupRemove({ id: e.id })
+        .then(res => {
+          if (res.code === 200) {
+            this.$message.success('删除成功')
+            this.handleOk()
+          } else {
+            this.$message.error(res.msg)
+          }
+        })
     },
     tableOption () {
       if (!this.optionAlertShow) {
@@ -217,6 +227,11 @@ export default {
       this.queryParam = {
         date: moment(new Date())
       }
+    },
+    startPolling () {
+      this.listTimer = window.setInterval(() => {
+        setTimeout(this.handleOk(), 0)
+      }, 3000)
     }
   }
 }

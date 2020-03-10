@@ -5,6 +5,7 @@ const api = {
   jobInfoSelectList: 'jobinfo/selectInfo',
   jobInfoUpdate: 'jobinfo/update',
   jobStart: 'jobinfo/start',
+  jobInfoAdd: 'jobinfo/add',
   jobStop: 'jobinfo/stop',
   jobTrigger: 'jobinfo/trigger',
   jobNextTriggerTime: 'jobinfo/nextTriggerTime'
@@ -65,6 +66,14 @@ export function jobNextTriggerTime (parameter) {
     url: api.jobNextTriggerTime,
     method: 'post',
     params: parameter
+  })
+}
+
+export function jobInfoAdd (parameter) {
+  return axios({
+    url: api.jobInfoAdd,
+    method: 'post',
+    data: parameter
   })
 }
 

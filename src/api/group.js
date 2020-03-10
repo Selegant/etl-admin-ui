@@ -2,7 +2,9 @@ import { axios } from '@/utils/request'
 
 const api = {
   jobGroupPageList: 'jobgroup',
-  jobInfoSelectList: 'jobinfo/selectInfo'
+  jobGroupSave: 'jobgroup/save',
+  jobGroupRemove: 'jobgroup/remove',
+  jobGroupUpdate: 'jobgroup/update'
 }
 
 export default api
@@ -15,27 +17,27 @@ export function jobGroupPageList (parameter) {
   })
 }
 
-export function getJobInfoSelectList (parameter) {
+export function jobGroupSave (parameter) {
   return axios({
-    url: api.jobInfoSelectList,
-    method: 'get',
+    url: api.jobGroupSave,
+    method: 'post',
     params: parameter
   })
 }
 
-export function getServiceList (parameter) {
+export function jobGroupRemove (parameter) {
   return axios({
-    url: api.service,
-    method: 'get',
+    url: api.jobGroupRemove,
+    method: 'post',
     params: parameter
   })
 }
 
-export function getPermissions (parameter) {
+export function jobGroupUpdate (parameter) {
   return axios({
-    url: api.permissionNoPager,
-    method: 'get',
-    params: parameter
+    url: api.jobGroupUpdate,
+    method: 'post',
+    data: parameter
   })
 }
 

@@ -5,7 +5,7 @@
         <div class="header">
           <a href="/">
             <img src="~@/assets/logo.svg" class="logo" alt="logo">
-            <span class="title">ETL Design</span>
+            <span class="title">ETL Management</span>
           </a>
         </div>
         <div class="desc">

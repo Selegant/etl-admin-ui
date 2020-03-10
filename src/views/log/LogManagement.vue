@@ -12,13 +12,6 @@
             </a-form-item>
           </a-col>
           <a-col :md="3" :sm="24">
-            <a-form-item label="任务">
-              <a-select v-model="queryParam.jobId" placeholder="请选择">
-                <a-select-option value="0">全部</a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :md="3" :sm="24">
             <a-form-item label="运行状态">
               <a-select v-model="queryParam.logStatus" placeholder="请选择" default-value="1">
                 <a-select-option value="-1">全部</a-select-option>
@@ -30,7 +23,7 @@
           </a-col>
           <a-col :md="6" :sm="24">
             <a-form-item label="调度时间">
-              <a-range-picker v-model="queryParam.filterTime"  :format="dateFormat"/>
+              <a-range-picker v-model="queryParam.filterTime" :format="dateFormat"/>
             </a-form-item>
           </a-col>
           <template v-if="advanced">
@@ -40,10 +33,6 @@
             <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
               <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
               <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
-<!--              <a @click="toggleAdvanced" style="margin-left: 8px">-->
-<!--                {{ advanced ? '收起' : '展开' }}-->
-<!--                <a-icon :type="advanced ? 'up' : 'down'"/>-->
-<!--              </a>-->
             </span>
           </a-col>
         </a-row>
@@ -82,22 +71,39 @@
       </span>
       <span slot="triggerMsg" slot-scope="text">
         <template>
-          <a-button type="primary" @click="showTriggerMsg">查看</a-button>
+          <a @click="showTriggerMsg">查看</a>
           <a-modal title="调度备注" :mask="false" v-model="triggerMsgVisible" @ok="handleTriggerMsgOk">
             <p v-html="text"></p>
           </a-modal>
         </template>
       </span>
       <span slot="handleTime" slot-scope="text">
-        <p v-if="text!=null">{{ text }}</p>
-        <p v-else>-</p>
+        <span v-if="text!=null">{{ text }}</span>
+        <span v-else>-</span>
+      </span>
+      <span slot="handleMsg" slot-scope="text">
+        <p v-if="text!='' && text!=null">{{ text }}</p>
+        <a-tag v-else>无</a-tag>
       </span>
       <span slot="handleCode" slot-scope="text">
-        {{ text | handleCodeFilter }}
+        <a-tag v-if="text!=null" :color="text | handleCodeColorFilter">
+          {{ text | handleCodeFilter }}
+        </a-tag>
+        <a-tag v-else>执行中</a-tag>
       </span>
-      <span slot="action" >
+      <span slot="action" slot-scope="record" >
         <template>
-          <a-button type="primary" @click="showTriggerMsg">查看</a-button>
+          <a @click="showLogDetail(record)">执行日志</a>
+          <a-modal
+            :width="1000"
+            title="执行日志"
+            :mask="false"
+            :bodyStyle="{'height': '600px', 'overflow-y': 'auto'}"
+            v-model="logDetailVisible"
+            @ok="closeLogDetail"
+            @cancel="closeLogDetail">
+            <p v-html="logDetail"></p>
+          </a-modal>
         </template>
       </span>
     </s-table>
@@ -112,7 +118,7 @@ import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
 import StepByStepModal from './modules/StepByStepModal'
 import CreateForm from './modules/CreateForm'
-import { getJobLogPageList } from '@/api/log'
+import { getJobLogPageList, jobLogDetailCat } from '@/api/log'
 import { getJobInfoSelectList } from '@/api/task'
 import TagSelectOption from '../../components/TagSelect/TagSelectOption'
 
@@ -126,11 +132,32 @@ const triggerCodeMap = {
 }
 
 const handleCodeMap = {
-  1: {
+  0: {
+    text: '执行中'
+  },
+  200: {
     text: '成功'
   },
-  0: {
+  500: {
     text: '无结果'
+  },
+  502: {
+    text: '失败(超时)'
+  }
+}
+
+const handleCodeColorMap = {
+  0: {
+    text: 'blue'
+  },
+  200: {
+    text: 'green'
+  },
+  500: {
+    text: 'red'
+  },
+  502: {
+    text: 'red'
   }
 }
 
@@ -145,7 +172,11 @@ export default {
   },
   data () {
     return {
+      listTimer: null,
+      timeInterval: Object,
       dateFormat: 'YYYY-MM-DD',
+      logDetail: '',
+      logDetailVisible: false,
       // 调度备注modal
       triggerMsgVisible: false,
       mdl: {},
@@ -163,15 +194,13 @@ export default {
       // 表头
       columns: [
         {
-          title: '#'
-        },
-        {
           title: '任务ID',
           dataIndex: 'id'
         },
         {
           title: '调度时间',
-          dataIndex: 'triggerTime'
+          dataIndex: 'triggerTime',
+          scopedSlots: { customRender: 'handleTime' }
         },
         {
           title: '调度结果',
@@ -192,6 +221,11 @@ export default {
           title: '执行结果',
           dataIndex: 'handleCode',
           scopedSlots: { customRender: 'handleCode' }
+        },
+        {
+          title: '执行备注',
+          dataIndex: 'handleMsg',
+          scopedSlots: { customRender: 'handleMsg' }
         },
         {
           title: '操作',
@@ -232,12 +266,23 @@ export default {
     },
     handleCodeFilter (type) {
       return handleCodeMap[type].text
+    },
+    handleCodeColorFilter (type) {
+      return handleCodeColorMap[type].text
     }
   },
   created () {
+    this.queryParam.jobId = this.$route.query.jobId
+    // console.log(this.$route.query)
     this.tableOption()
     this.loadSelectInfo()
+    this.startPolling()
     // getRoleList({ t: new Date() })
+  },
+  beforeDestroy () {
+    if (this.listTimer) {
+      window.clearInterval(this.listTimer)
+    }
   },
   methods: {
     handleTriggerMsgOk () {
@@ -245,6 +290,33 @@ export default {
     },
     showTriggerMsg () {
       this.triggerMsgVisible = true
+    },
+    closeLogDetail () {
+      this.logDetail = ''
+      window.clearInterval(this.timeInterval)
+      this.logDetailVisible = false
+    },
+    showLogDetail (e) {
+      // this.logDetail = ''
+      // window.clearInterval(this.timeInterval)
+      this.logDetailVisible = true
+      const logDetailParams = {
+        'executorAddress': e.executorAddress,
+        'triggerTime': moment(e.triggerTime, 'YYYY-MM-DD HH:mm:ss').valueOf(),
+        'logId': e.id,
+        'fromLineNum': '1'
+      }
+      this.syncLogDetail(logDetailParams)
+      this.timeInterval = window.setInterval(() => {
+        this.syncLogDetail(logDetailParams)
+      }, 3000)
+    },
+    syncLogDetail (logDetailParams) {
+      jobLogDetailCat(logDetailParams).then(res => {
+        if (res.code === 200) {
+          this.logDetail = res.content.logContent
+        }
+      })
     },
     executeOnce (e) {
       console.log(e)
@@ -312,6 +384,11 @@ export default {
         logStatus: '-1',
         filterTime: []
       }
+    },
+    startPolling () {
+      this.listTimer = window.setInterval(() => {
+        setTimeout(this.handleOk(), 0)
+      }, 3000)
     }
   }
 }

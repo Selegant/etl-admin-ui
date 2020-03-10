@@ -6,6 +6,7 @@
           <a-col :md="4" :sm="24">
             <a-form-item label="执行器">
               <a-select v-model="queryParam.jobGroup" placeholder="请选择">
+                <a-select-option value="-1">全部</a-select-option>
                 <a-select-option v-for="item in jobGroupList" :key="item.id" :value="item.id">{{ item.title }}</a-select-option>
               </a-select>
             </a-form-item>
@@ -65,10 +66,6 @@
             <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
               <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
               <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
-              <a @click="toggleAdvanced" style="margin-left: 8px">
-                {{ advanced ? '收起' : '展开' }}
-                <a-icon :type="advanced ? 'up' : 'down'"/>
-              </a>
             </span>
           </a-col>
         </a-row>
@@ -76,7 +73,7 @@
     </div>
 
     <div class="table-operator">
-      <a-button type="primary" icon="plus" @click="$refs.createModal.add()">新建</a-button>
+      <a-button type="primary" icon="plus" @click="$refs.createModal.add(jobGroupList)">新建</a-button>
       <a-button type="dashed" @click="tableOption">{{ optionAlertShow && '关闭' || '开启' }} alert</a-button>
       <a-dropdown v-action:edit v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay">
@@ -101,7 +98,10 @@
       showPagination="auto"
     >
       <span slot="jobDesc" slot-scope="record">
-        {{ record.glueType }} : {{ record.executorHandler }}
+        {{ record.jobDesc }}
+      </span>
+      <span slot="executorHandler" slot-scope="record">
+        {{ record.glueType }}:{{ record.executorHandler }}
       </span>
       <span slot="triggerStatus" slot-scope="text">
         <a-tag :color="text===0 ? 'gray' : 'green'">
@@ -113,8 +113,16 @@
           <a-dropdown>
             <a-menu slot="overlay">
               <a-menu-item @click="$refs.executeForm.execute(record)">执行一次</a-menu-item>
-              <a-menu-item @click="queryLog(record)">查询日志</a-menu-item>
-              <a-menu-item key="3">注册节点</a-menu-item>
+              <a-menu-item >
+                <router-link :to="{ name: 'LogManagement', query:{jobId:record.id}}">
+                  <span>查询日志</span>
+                </router-link>
+              </a-menu-item>
+              <a-menu-item >
+                <router-link :to="{ name: 'GroupManagement', query:{id:record.jobGroup} }">
+                  <span>注册节点</span>
+                </router-link>
+              </a-menu-item>
               <a-menu-item @click="getNextTriggerTime(record)">下次执行时间</a-menu-item>
               <a-menu-item v-if="record.triggerStatus===0" @click="startTask(record)">启动</a-menu-item>
               <a-menu-item v-if="record.triggerStatus===1" @click="stopTask(record)">停止</a-menu-item>
@@ -135,9 +143,8 @@
     <a-modal
       title="下次执行时间"
       v-model="nextTriggerTimeShow"
-      @ok="() => this.nextTriggerTimeShow=false"
-    >
-      <p v-for="item in nextTriggerTimeList" :key="item.index">{{item}}</p>
+      @ok="() => this.nextTriggerTimeShow=false">
+      <p v-for="item in nextTriggerTimeList" :key="item.index">{{ item }}</p>
     </a-modal>
   </a-card>
 </template>
@@ -180,14 +187,12 @@ export default {
       advanced: false,
       // 查询参数
       queryParam: {
+        jobGroup: '-1'
       },
       // jobGroupList
       jobGroupList: [],
       // 表头
       columns: [
-        {
-          title: '#'
-        },
         {
           title: '任务ID',
           dataIndex: 'id'
@@ -199,7 +204,8 @@ export default {
         },
         {
           title: '运行模式',
-          dataIndex: 'executorHandler'
+          // dataIndex: 'executorHandler',
+          scopedSlots: { customRender: 'executorHandler' }
         },
         {
           title: 'Cron',
@@ -317,7 +323,7 @@ export default {
       getJobInfoSelectList().then(res => {
         console.log(res.data)
         this.jobGroupList = res.data.jobGroupList
-        this.queryParam.jobGroup = res.data.jobGroup
+        // this.queryParam.jobGroup = res.data.jobGroup
         return res.data
       })
     },
