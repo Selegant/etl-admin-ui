@@ -281,11 +281,10 @@ export default {
         content: '确定停止任务？',
         okText: '确认',
         cancelText: '取消',
-        onOk () {
+        onOk: () => {
           jobStop({ id: e.id }).then((res) => {
             if (res.code === 200) {
-              window.location.reload()
-              // return resolve
+              this.handleOk()
             } else {
               this.$message.error(res.msg)
             }
@@ -300,11 +299,10 @@ export default {
         content: '确定启动任务？',
         okText: '确认',
         cancelText: '取消',
-        onOk () {
+        onOk: () => {
           jobStart({ id: e.id }).then((res) => {
             if (res.code === 200) {
-              window.location.reload()
-              // return resolve
+              this.handleOk()
             } else {
               this.$message.error(res.msg)
             }

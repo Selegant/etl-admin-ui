@@ -41,6 +41,31 @@ export const asyncRouterMap = [
             meta: { title: '执行器列表', keepAlive: true, permission: [ 'table' ] }
           }
         ]
+      },
+
+      // kettle
+      {
+        path: '/kettle',
+        name: 'kettle',
+        component: PageView,
+        redirect: '/kettle/job-management',
+        meta: { title: 'KETTLE', icon: 'project', permission: [ 'table' ] },
+        children: [
+          {
+            path: '/kettle/job-management',
+            name: 'JobManagement',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/kettle/JobManagement'),
+            meta: { title: '作业管理', keepAlive: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/kettle/trans-management',
+            name: 'TransManagement',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/kettle/TransManagement'),
+            meta: { title: '转换管理', keepAlive: true, permission: [ 'table' ] }
+          }
+        ]
       }
     ]
   },
