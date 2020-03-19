@@ -9,6 +9,7 @@ import store from './store/'
 import { VueAxios } from './utils/request'
 import JsonViewer from 'vue-json-viewer'
 import VCharts from 'v-charts'
+import moment from 'moment'
 
 // mock
 // WARNING: `mockjs` NOT SUPPORT `IE` PLEASE DO NOT USE IN `production` ENV.
@@ -21,6 +22,7 @@ import './utils/filter' // global filter
 import './components/global.less'
 
 Vue.config.productionTip = false
+Vue.prototype.$moment = moment
 
 // mount axios Vue.$http and this.$http
 Vue.use(VueAxios)

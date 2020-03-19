@@ -1,39 +1,23 @@
 <template>
   <div class="page-header-index-wide">
     <a-row :gutter="24">
-      <a-col :sm="24" :md="12" :xl="12" :style="{ marginBottom: '24px' }">
+      <a-col :sm="24" :md="8" :xl="8" :style="{ marginBottom: '24px' }">
         <a-card title="任务数量" :bordered="false" >
           <span style="font-weight: bold;font-size: 20px;" slot="extra">{{ dashboardInfo.jobInfoCount }}</span>
           <ve-pie :data="monitorJobTypeInfo"></ve-pie>
         </a-card>
-        <!--        <chart-card style="height: 400px" :loading="loading" title="任务数量" :total="dashboardInfo.jobInfoCount">-->
-        <!--          &lt;!&ndash;          <a-tooltip title="指标说明" slot="action">&ndash;&gt;-->
-        <!--          &lt;!&ndash;            <a-icon type="info-circle-o" />&ndash;&gt;-->
-        <!--          &lt;!&ndash;          </a-tooltip>&ndash;&gt;-->
-        <!--          <trend flag="" style="margin-right: 16px;">-->
-        <!--            <ve-pie width="100px" height="100px" :data="monitorJobTypeInfo"></ve-pie>-->
-        <!--          </trend>-->
-        <!--        </chart-card>-->
       </a-col>
-      <a-col :sm="24" :md="12" :xl="12" :style="{ marginBottom: '24px' }">
-        <a-card title="调度执行情况" :bordered="false" >
+      <a-col :sm="24" :md="8" :xl="8" :style="{ marginBottom: '24px' }">
+        <a-card title="调度执行" :bordered="false" >
           <span style="font-weight: bold;font-size: 20px;" slot="extra">{{ dashboardInfo.jobLogCount }}</span>
           <ve-pie :data="monitorJobExecInfo"></ve-pie>
         </a-card>
-        <!--        <chart-card :loading="loading" title="调度执行总数" :total="dashboardInfo.jobLogCount">-->
-        <!--          <trend flag="" style="margin-right: 16px;">-->
-        <!--            <span slot="term">成功次数</span>-->
-        <!--            {{ dashboardInfo.jobLogSuccessCount }}-->
-        <!--          </trend>-->
-        <!--          <trend flag="">-->
-        <!--            <span slot="term">失败次数</span>-->
-        <!--            {{ dashboardInfo.jobLogFailCount }}-->
-        <!--          </trend>-->
-        <!--          <template slot="footer">-->
-        <!--            <span slot="term">运行中次数</span>-->
-        <!--            {{ dashboardInfo.jobRunningCount }}-->
-        <!--          </template>-->
-        <!--        </chart-card>-->
+      </a-col>
+      <a-col :sm="24" :md="8" :xl="8" :style="{ marginBottom: '24px' }">
+        <a-card title="作业状态" :bordered="false" >
+          <span style="font-weight: bold;font-size: 20px;" slot="extra">{{ dashboardInfo.jobInfoCount }}</span>
+          <ve-pie :data="monitorJobStatusInfo"></ve-pie>
+        </a-card>
       </a-col>
     </a-row>
 
@@ -80,7 +64,7 @@
 <script>
 import moment from 'moment'
 import { ChartCard, MiniArea, MiniBar, MiniProgress, RankList, Bar, Trend, NumberInfo, MiniSmoothArea } from '@/components'
-import { dashboardInfo, chartInfo, monitorJobTypeInfo, monitorJobExecInfo } from '@/api/monitor'
+import { dashboardInfo, chartInfo, monitorJobTypeInfo, monitorJobExecInfo, monitorJobStatusInfo } from '@/api/monitor'
 
 export default {
   name: 'Analysis',
@@ -109,6 +93,10 @@ export default {
       },
       monitorJobExecInfo: {
         columns: ['类型', '数量'],
+        rows: []
+      },
+      monitorJobStatusInfo: {
+        columns: ['运行状态', '数量'],
         rows: []
       }
     }
@@ -150,6 +138,13 @@ export default {
       monitorJobExecInfo().then((res) => {
         if (res.code === 200) {
           this.monitorJobExecInfo.rows = res.content
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+      monitorJobStatusInfo().then((res) => {
+        if (res.code === 200) {
+          this.monitorJobStatusInfo.rows = res.content
         } else {
           this.$message.error(res.msg)
         }

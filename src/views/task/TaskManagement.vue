@@ -120,6 +120,11 @@
                 </router-link>
               </a-menu-item>
               <a-menu-item >
+                <router-link :to="{ name: 'LogManagement', query:{jobId:record.id,logStatus:2}}">
+                  <span style="color: red">查询错误日志</span>
+                </router-link>
+              </a-menu-item>
+              <a-menu-item >
                 <router-link :to="{ name: 'GroupManagement', query:{id:record.jobGroup} }">
                   <span>注册节点</span>
                 </router-link>

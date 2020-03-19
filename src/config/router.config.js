@@ -25,6 +25,13 @@ export const asyncRouterMap = [
             hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
             component: () => import('@/views/monitor/Analysis'),
             meta: { title: '监控分析', keepAlive: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/monitor/taskAnalysis',
+            name: 'TaskAnalysis',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/monitor/TaskAnalysis'),
+            meta: { title: '作业分析', keepAlive: true, permission: [ 'table' ] }
           }
         ]
       },

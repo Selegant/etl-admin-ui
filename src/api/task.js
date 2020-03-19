@@ -8,7 +8,8 @@ const api = {
   jobInfoAdd: 'jobinfo/add',
   jobStop: 'jobinfo/stop',
   jobTrigger: 'jobinfo/trigger',
-  jobNextTriggerTime: 'jobinfo/nextTriggerTime'
+  jobNextTriggerTime: 'jobinfo/nextTriggerTime',
+  jobList: 'jobinfo/list'
 }
 
 export default api
@@ -18,6 +19,13 @@ export function getJobInfoPageList (parameter) {
     url: api.jobInfoPageList,
     method: 'post',
     params: parameter
+  })
+}
+
+export function jobList () {
+  return axios({
+    url: api.jobList,
+    method: 'get'
   })
 }
 

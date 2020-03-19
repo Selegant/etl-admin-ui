@@ -14,10 +14,10 @@
           <a-col :md="4" :sm="24">
             <a-form-item label="运行状态">
               <a-select v-model="queryParam.logStatus" placeholder="请选择" default-value="1">
-                <a-select-option value="-1">全部</a-select-option>
-                <a-select-option value="1">成功</a-select-option>
-                <a-select-option value="2">失败</a-select-option>
-                <a-select-option value="3">运行中</a-select-option>
+                <a-select-option :value="-1">全部</a-select-option>
+                <a-select-option :value="1">成功</a-select-option>
+                <a-select-option :value="2">失败</a-select-option>
+                <a-select-option :value="3">运行中</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -239,7 +239,6 @@ export default {
       ],
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
-        console.log('loadData.parameter', parameter)
         if (this.queryParam.filterTime.length > 0) {
           this.queryParam.filterTime[0] = moment(this.queryParam.filterTime[0]).format('YYYY-MM-DD HH:mm:ss')
           this.queryParam.filterTime[1] = moment(this.queryParam.filterTime[1]).format('YYYY-MM-DD HH:mm:ss')
@@ -276,6 +275,7 @@ export default {
   },
   created () {
     this.queryParam.jobId = this.$route.query.jobId
+    this.queryParam.logStatus = this.$route.query.logStatus
     // console.log(this.$route.query)
     this.tableOption()
     this.loadSelectInfo()
@@ -293,11 +293,6 @@ export default {
     },
     showTriggerMsg () {
       this.triggerMsgVisible = true
-    },
-    closeLogDetail () {
-      this.logDetail = ''
-      window.clearInterval(this.timeInterval)
-      this.logDetailVisible = false
     },
     showLogDetail (e) {
       // this.logDetail = ''
