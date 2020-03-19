@@ -91,23 +91,24 @@
         </a-tag>
         <a-tag v-else>执行中</a-tag>
       </span>
-      <span slot="action" slot-scope="record" >
+      <span slot="action" slot-scope="record">
         <template>
           <a @click="showLogDetail(record)">执行日志</a>
-          <a-modal
-            :width="1000"
-            title="执行日志"
-            :mask="false"
-            :bodyStyle="{'height': '600px', 'overflow-y': 'auto'}"
-            v-model="logDetailVisible"
-            @ok="closeLogDetail"
-            @cancel="closeLogDetail">
-            <p v-html="logDetail"></p>
-          </a-modal>
+          <!--          <a-modal-->
+          <!--            :width="1000"-->
+          <!--            title="执行日志"-->
+          <!--            :mask="false"-->
+          <!--            :bodyStyle="{'height': '600px', 'overflow-y': 'auto'}"-->
+          <!--            v-model="logDetailVisible"-->
+          <!--            @ok="closeLogDetail"-->
+          <!--            @cancel="closeLogDetail">-->
+          <!--            <p v-html="logDetail"></p>-->
+          <!--          </a-modal>-->
         </template>
       </span>
     </s-table>
 
+    <detail ref="detail"></detail>
     <create-form ref="createModal" @ok="handleOk"/>
     <step-by-step-modal ref="modal" @ok="handleOk"/>
   </a-card>
@@ -118,6 +119,7 @@ import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
 import StepByStepModal from './modules/StepByStepModal'
 import CreateForm from './modules/CreateForm'
+import Detail from './modules/Detail'
 import { getJobLogPageList, jobLogDetailCat } from '@/api/log'
 import { getJobInfoSelectList } from '@/api/task'
 import TagSelectOption from '../../components/TagSelect/TagSelectOption'
@@ -168,7 +170,8 @@ export default {
     STable,
     Ellipsis,
     CreateForm,
-    StepByStepModal
+    StepByStepModal,
+    Detail
   },
   data () {
     return {
@@ -299,7 +302,7 @@ export default {
     showLogDetail (e) {
       // this.logDetail = ''
       // window.clearInterval(this.timeInterval)
-      this.logDetailVisible = true
+      // this.logDetailVisible = true
       const logDetailParams = {
         'executorAddress': e.executorAddress,
         'triggerTime': moment(e.triggerTime, 'YYYY-MM-DD HH:mm:ss').valueOf(),
@@ -310,6 +313,7 @@ export default {
       this.timeInterval = window.setInterval(() => {
         this.syncLogDetail(logDetailParams)
       }, 3000)
+      this.$refs.detail.modal()
     },
     syncLogDetail (logDetailParams) {
       jobLogDetailCat(logDetailParams).then(res => {

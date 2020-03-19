@@ -11,6 +11,24 @@ export const asyncRouterMap = [
     meta: { title: '首页' },
     redirect: '/task/task-management',
     children: [
+      // kettle
+      {
+        path: '/monitor',
+        name: 'monitor',
+        component: PageView,
+        redirect: '/monitor/analysis',
+        meta: { title: '调度分析', icon: 'fund', permission: [ 'table' ] },
+        children: [
+          {
+            path: '/monitor/analysis',
+            name: 'Analysis',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/monitor/Analysis'),
+            meta: { title: '监控分析', keepAlive: true, permission: [ 'table' ] }
+          }
+        ]
+      },
+
       // task
       {
         path: '/task',

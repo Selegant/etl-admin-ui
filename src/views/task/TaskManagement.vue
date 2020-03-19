@@ -22,8 +22,9 @@
           <a-col :md="4" :sm="24">
             <a-form-item label="任务类型">
               <a-select v-model="queryParam.objectType" placeholder="请选择" default-value="1">
-                <a-select-option :value="0">作业</a-select-option>
+                <a-select-option :value="2">作业</a-select-option>
                 <a-select-option :value="1">转换</a-select-option>
+                <a-select-option :value="3">普通作业</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -74,7 +75,7 @@
 
     <div class="table-operator">
       <a-button type="primary" icon="plus" @click="$refs.createModal.add(jobGroupList)">新建</a-button>
-      <a-button type="dashed" @click="tableOption">{{ optionAlertShow && '关闭' || '开启' }} alert</a-button>
+      <!--      <a-button type="dashed" @click="tableOption">{{ optionAlertShow && '关闭' || '开启' }} alert</a-button>-->
       <a-dropdown v-action:edit v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay">
           <a-menu-item key="1"><a-icon type="delete" />删除</a-menu-item>

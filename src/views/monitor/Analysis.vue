@@ -1,0 +1,236 @@
+<template>
+  <div class="page-header-index-wide">
+    <a-row :gutter="24">
+      <a-col :sm="24" :md="12" :xl="12" :style="{ marginBottom: '24px' }">
+        <a-card title="任务数量" :bordered="false" >
+          <span style="font-weight: bold;font-size: 20px;" slot="extra">{{ dashboardInfo.jobInfoCount }}</span>
+          <ve-pie :data="monitorJobTypeInfo"></ve-pie>
+        </a-card>
+        <!--        <chart-card style="height: 400px" :loading="loading" title="任务数量" :total="dashboardInfo.jobInfoCount">-->
+        <!--          &lt;!&ndash;          <a-tooltip title="指标说明" slot="action">&ndash;&gt;-->
+        <!--          &lt;!&ndash;            <a-icon type="info-circle-o" />&ndash;&gt;-->
+        <!--          &lt;!&ndash;          </a-tooltip>&ndash;&gt;-->
+        <!--          <trend flag="" style="margin-right: 16px;">-->
+        <!--            <ve-pie width="100px" height="100px" :data="monitorJobTypeInfo"></ve-pie>-->
+        <!--          </trend>-->
+        <!--        </chart-card>-->
+      </a-col>
+      <a-col :sm="24" :md="12" :xl="12" :style="{ marginBottom: '24px' }">
+        <a-card title="调度执行情况" :bordered="false" >
+          <span style="font-weight: bold;font-size: 20px;" slot="extra">{{ dashboardInfo.jobLogCount }}</span>
+          <ve-pie :data="monitorJobExecInfo"></ve-pie>
+        </a-card>
+        <!--        <chart-card :loading="loading" title="调度执行总数" :total="dashboardInfo.jobLogCount">-->
+        <!--          <trend flag="" style="margin-right: 16px;">-->
+        <!--            <span slot="term">成功次数</span>-->
+        <!--            {{ dashboardInfo.jobLogSuccessCount }}-->
+        <!--          </trend>-->
+        <!--          <trend flag="">-->
+        <!--            <span slot="term">失败次数</span>-->
+        <!--            {{ dashboardInfo.jobLogFailCount }}-->
+        <!--          </trend>-->
+        <!--          <template slot="footer">-->
+        <!--            <span slot="term">运行中次数</span>-->
+        <!--            {{ dashboardInfo.jobRunningCount }}-->
+        <!--          </template>-->
+        <!--        </chart-card>-->
+      </a-col>
+    </a-row>
+
+    <a-card :loading="loading" :bordered="false" :body-style="{padding: '0'}">
+      <div class="salesCard">
+        <a-tabs default-active-key="1" size="large" :tab-bar-style="{marginBottom: '24px', paddingLeft: '16px'}">
+          <div class="extra-wrapper" slot="tabBarExtraContent">
+            <div class="extra-item">
+              <a @click="loadChat('week')">本周</a>
+              <a @click="loadChat('month')">本月</a>
+              <a @click="loadChat('year')">本年</a>
+            </div>
+            <a-range-picker :style="{width: '256px'}" @change="loadChatByDate" :disabledDate="disabledDate"/>
+          </div>
+          <a-tab-pane loading="true" tab="运行监控" key="1">
+            <a-row>
+              <a-col
+                :push="2"
+                :xl="20"
+                :lg="20"
+                :md="20"
+                :sm="20"
+                :xs="20">
+                <ve-line :data="jobExecData"></ve-line>
+              </a-col>
+            </a-row>
+          </a-tab-pane>
+          <!--          <a-tab-pane tab="转换执行" key="2">-->
+          <!--            <a-row>-->
+          <!--              <a-col :xl="16" :lg="12" :md="12" :sm="24" :xs="24">-->
+          <!--                <bar :data="barData2" title="销售额趋势" />-->
+          <!--              </a-col>-->
+          <!--              <a-col :xl="8" :lg="12" :md="12" :sm="24" :xs="24">-->
+          <!--                <rank-list title="门店销售排行榜" :list="rankList"/>-->
+          <!--              </a-col>-->
+          <!--            </a-row>-->
+          <!--          </a-tab-pane>-->
+        </a-tabs>
+      </div>
+    </a-card>
+  </div>
+</template>
+
+<script>
+import moment from 'moment'
+import { ChartCard, MiniArea, MiniBar, MiniProgress, RankList, Bar, Trend, NumberInfo, MiniSmoothArea } from '@/components'
+import { dashboardInfo, chartInfo, monitorJobTypeInfo, monitorJobExecInfo } from '@/api/monitor'
+
+export default {
+  name: 'Analysis',
+  components: {
+    ChartCard,
+    MiniArea,
+    MiniBar,
+    MiniProgress,
+    RankList,
+    Bar,
+    Trend,
+    NumberInfo,
+    MiniSmoothArea
+  },
+  data () {
+    return {
+      loading: true,
+      dashboardInfo: {},
+      jobExecData: {
+        columns: ['日期', '成功次数', '失败次数', '正在运行数'],
+        rows: []
+      },
+      monitorJobTypeInfo: {
+        columns: ['类型', '数量'],
+        rows: []
+      },
+      monitorJobExecInfo: {
+        columns: ['类型', '数量'],
+        rows: []
+      }
+    }
+  },
+  created () {
+    this.init()
+  },
+  methods: {
+    disabledDate (current) {
+      // Can not select days before today and today
+      return current && current > moment().endOf('day')
+    },
+    init () {
+      let startDate = ''
+      let endDate = ''
+      startDate = moment().subtract('days', 8).format('YYYY-MM-DD HH:mm:ss')
+      endDate = moment().subtract('days', 1).format('YYYY-MM-DD HH:mm:ss')
+      dashboardInfo().then((res) => {
+        if (res.code === 200) {
+          this.dashboardInfo = res.content
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+      chartInfo({ 'startDate': startDate, 'endDate': endDate }).then((res) => {
+        if (res.code === 200) {
+          this.jobExecData.rows = res.content
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+      monitorJobTypeInfo().then((res) => {
+        if (res.code === 200) {
+          this.monitorJobTypeInfo.rows = res.content
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+      monitorJobExecInfo().then((res) => {
+        if (res.code === 200) {
+          this.monitorJobExecInfo.rows = res.content
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+      this.loading = false
+    },
+    loadChat (param) {
+      let startDate = ''
+      let endDate = ''
+      if (param === 'month') {
+        startDate = moment().startOf('month').format('YYYY-MM-DD HH:mm:ss')
+        endDate = moment().startOf('day').format('YYYY-MM-DD HH:mm:ss')
+      } else if (param === 'week') {
+        startDate = moment().startOf('week').format('YYYY-MM-DD HH:mm:ss')
+        endDate = moment().startOf('day').format('YYYY-MM-DD HH:mm:ss')
+      } else if (param === 'year') {
+        startDate = moment().startOf('year').format('YYYY-MM-DD HH:mm:ss')
+        endDate = moment().startOf('day').format('YYYY-MM-DD HH:mm:ss')
+      }
+      chartInfo({ 'startDate': startDate, 'endDate': endDate }).then((res) => {
+        if (res.code === 200) {
+          this.jobExecData.rows = res.content
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    },
+    loadChatByDate (e) {
+      chartInfo({ 'startDate': e[0].format('YYYY-MM-DD HH:mm:ss'), 'endDate': e[1].format('YYYY-MM-DD HH:mm:ss') }).then((res) => {
+        if (res.code === 200) {
+          this.jobExecData.rows = res.content
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+  .extra-wrapper {
+    line-height: 55px;
+    padding-right: 24px;
+
+    .extra-item {
+      display: inline-block;
+      margin-right: 24px;
+
+      a {
+        margin-left: 24px;
+      }
+    }
+  }
+
+  .antd-pro-pages-dashboard-analysis-twoColLayout {
+    position: relative;
+    display: flex;
+    display: block;
+    flex-flow: row wrap;
+  }
+
+  .antd-pro-pages-dashboard-analysis-salesCard {
+    height: calc(100% - 24px);
+    /deep/ .ant-card-head {
+      position: relative;
+    }
+  }
+
+  .dashboard-analysis-iconGroup {
+    i {
+      margin-left: 16px;
+      color: rgba(0,0,0,.45);
+      cursor: pointer;
+      transition: color .32s;
+      color: black;
+    }
+  }
+  .analysis-salesTypeRadio {
+    position: absolute;
+    right: 54px;
+    bottom: 12px;
+  }
+</style>
