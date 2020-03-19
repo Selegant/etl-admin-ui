@@ -3,7 +3,7 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="4" :sm="24">
+          <a-col :md="6" :sm="24">
             <a-form-item label="作业名称">
               <a-input v-model="queryParam.name" style="width: 100%" placeholder="请输入作业名称"/>
             </a-form-item>

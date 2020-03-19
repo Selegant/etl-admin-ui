@@ -11,7 +11,7 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col :md="3" :sm="24">
+          <a-col :md="4" :sm="24">
             <a-form-item label="运行状态">
               <a-select v-model="queryParam.logStatus" placeholder="请选择" default-value="1">
                 <a-select-option value="-1">全部</a-select-option>
