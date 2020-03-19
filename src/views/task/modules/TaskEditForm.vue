@@ -50,7 +50,14 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-input v-decorator="['record.jobCron', {rules:[{required: true, message: '请输入Cron表达式'}]}]" />
+            <a-select
+              showSearch
+              placeholder="请选择任务"
+              optionFilterProp="children"
+              v-decorator="['record.jobCron', {rules:[{required: true, message: '请选择Cron表达式'}]}]"
+            >
+              <a-select-option v-for="item in cronList" :key="item.id" :value="item.cron">{{ item.cronDesc }}</a-select-option>
+            </a-select>
           </a-form-item>
         </a-col>
       </a-row>
@@ -167,6 +174,7 @@ export default {
       record: {},
       id: '',
       jobGroupList: [],
+      cronList: [],
       labelCol: {
         xs: { span: 24 },
         sm: { span: 7 }
@@ -184,8 +192,9 @@ export default {
     add () {
       this.visible = true
     },
-    edit (record, jobGroupList) {
+    edit (record, jobGroupList, cronList) {
       const { form: { setFieldsValue } } = this
+      this.cronList = cronList
       this.jobGroupList = jobGroupList
       this.id = record.id
       this.visible = true

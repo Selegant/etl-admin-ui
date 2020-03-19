@@ -167,15 +167,22 @@ export default {
 
     },
     del (e) {
-      jobGroupRemove({ id: e.id })
-        .then(res => {
-          if (res.code === 200) {
-            this.$message.success('删除成功')
-            this.handleOk()
-          } else {
-            this.$message.error(res.msg)
-          }
-        })
+      this.$confirm({
+        title: '删除转换',
+        content: '确认删除执行器吗？',
+        onOk: () => {
+          jobGroupRemove({ id: e.id })
+            .then(res => {
+              if (res.code === 200) {
+                this.$message.success('删除成功')
+                this.handleOk()
+              } else {
+                this.$message.error(res.msg)
+              }
+            })
+        },
+        onCancel () {}
+      })
     },
     tableOption () {
       if (!this.optionAlertShow) {

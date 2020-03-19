@@ -5,6 +5,7 @@
         <a-tabs default-active-key="1" size="large" :tab-bar-style="{marginBottom: '24px', paddingLeft: '16px'}">
           <div class="extra-wrapper" slot="tabBarExtraContent">
             <div class="extra-item">
+              <a @click="loadChat('now')">今日</a>
               <a @click="loadChat('day')">昨日</a>
               <a @click="loadChat('week')">本周</a>
               <a @click="loadChat('month')">本月</a>
@@ -180,7 +181,7 @@ export default {
       jobId: '',
       loading: true,
       startDate: moment().subtract('days', 1).format('YYYY-MM-DD'),
-      endDate: moment().subtract('days', 0).format('YYYY-MM-DD'),
+      endDate: moment().subtract('days', -1).format('YYYY-MM-DD'),
       height: '',
       logData: [],
       taskData: {
@@ -277,8 +278,8 @@ export default {
     },
     init () {
       this.tableVisable = false
-      this.startDate = moment().subtract('days', 1).format('YYYY-MM-DD')
-      this.endDate = moment().subtract('days', 0).format('YYYY-MM-DD')
+      this.startDate = moment().subtract('days', 0).format('YYYY-MM-DD')
+      this.endDate = moment().subtract('days', -1).format('YYYY-MM-DD')
       monitorTaskExecInfo({ 'startDate': this.startDate, 'endDate': this.endDate, 'jobId': this.jobId }).then((res) => {
         if (res.code === 200) {
           this.taskData.rows = res.content.chartInfo
@@ -309,6 +310,9 @@ export default {
       } else if (param === 'day') {
         this.startDate = moment().subtract('days', 1).format('YYYY-MM-DD')
         this.endDate = moment().subtract('days', 0).format('YYYY-MM-DD')
+      } else if (param === 'now') {
+        this.startDate = moment().subtract('days', 0).format('YYYY-MM-DD')
+        this.endDate = moment().subtract('days', -1).format('YYYY-MM-DD')
       }
       monitorTaskExecInfo({ 'startDate': this.startDate, 'endDate': this.endDate, 'jobId': this.jobId }).then((res) => {
         if (res.code === 200) {

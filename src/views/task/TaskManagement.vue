@@ -22,9 +22,17 @@
           <a-col :md="4" :sm="24">
             <a-form-item label="任务类型">
               <a-select v-model="queryParam.objectType" placeholder="请选择" default-value="1">
-                <a-select-option :value="2">作业</a-select-option>
-                <a-select-option :value="1">转换</a-select-option>
+                <a-select-option :value="2">KETTLE 作业</a-select-option>
+                <a-select-option :value="1">KETTLE 转换</a-select-option>
                 <a-select-option :value="3">普通作业</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
+          <a-col :md="5" :sm="24">
+            <a-form-item label="CRON">
+              <a-select showSearch v-model="queryParam.cron" placeholder="请选择">
+                <a-select-option value="-1">全部</a-select-option>
+                <a-select-option v-for="item in cronList" :key="item.id" :value="item.cron">{{ item.cronDesc }}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -132,8 +140,8 @@
               <a-menu-item @click="getNextTriggerTime(record)">下次执行时间</a-menu-item>
               <a-menu-item v-if="record.triggerStatus===0" @click="startTask(record)">启动</a-menu-item>
               <a-menu-item v-if="record.triggerStatus===1" @click="stopTask(record)">停止</a-menu-item>
-              <a-menu-item @click="$refs.taskEditForm.edit(record,jobGroupList)">编辑</a-menu-item>
-              <a-menu-item key="7">删除</a-menu-item>
+              <a-menu-item @click="$refs.taskEditForm.edit(record,jobGroupList,cronList)">编辑</a-menu-item>
+              <a-menu-item @click="deleteTask(record)">删除</a-menu-item>
             </a-menu>
             <a-button> 操作 <a-icon type="down" /> </a-button>
           </a-dropdown>
@@ -162,7 +170,8 @@ import StepByStepModal from './modules/StepByStepModal'
 import CreateForm from './modules/CreateForm'
 import TaskEditForm from './modules/TaskEditForm'
 import ExecuteForm from './modules/ExecuteForm'
-import { getJobInfoPageList, getJobInfoSelectList, jobStart, jobStop, jobNextTriggerTime } from '@/api/task'
+import { getJobInfoPageList, getJobInfoSelectList, jobStart, jobStop, jobNextTriggerTime, jobDelete } from '@/api/task'
+import { getCron } from '@/api/cron'
 import TagSelectOption from '../../components/TagSelect/TagSelectOption'
 
 const statusMap = {
@@ -197,6 +206,8 @@ export default {
       },
       // jobGroupList
       jobGroupList: [],
+      // cronList
+      cronList: [],
       // 表头
       columns: [
         {
@@ -281,6 +292,24 @@ export default {
         }
       })
     },
+    deleteTask (e) {
+      this.$confirm({
+        title: '系统提示',
+        content: '确定删除任务？',
+        okText: '确认',
+        cancelText: '取消',
+        onOk: () => {
+          jobDelete({ id: e.id }).then((res) => {
+            if (res.code === 200) {
+              this.handleOk()
+            } else {
+              this.$message.error(res.msg)
+            }
+          })
+        },
+        onCancel () {}
+      })
+    },
     stopTask (e) {
       this.$confirm({
         title: '系统提示',
@@ -329,6 +358,9 @@ export default {
         this.jobGroupList = res.data.jobGroupList
         // this.queryParam.jobGroup = res.data.jobGroup
         return res.data
+      })
+      getCron().then(res => {
+        this.cronList = res.data
       })
     },
     tableOption () {

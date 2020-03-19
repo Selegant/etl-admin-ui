@@ -26,6 +26,7 @@
         <a-tabs default-active-key="1" size="large" :tab-bar-style="{marginBottom: '24px', paddingLeft: '16px'}">
           <div class="extra-wrapper" slot="tabBarExtraContent">
             <div class="extra-item">
+              <a @click="loadChat('10')">最近十天</a>
               <a @click="loadChat('week')">本周</a>
               <a @click="loadChat('month')">本月</a>
               <a @click="loadChat('year')">本年</a>
@@ -107,13 +108,13 @@ export default {
   methods: {
     disabledDate (current) {
       // Can not select days before today and today
-      return current && current > moment().endOf('day')
+      return current && current > moment().endOf('day').add(1, 'days')
     },
     init () {
       let startDate = ''
       let endDate = ''
-      startDate = moment().subtract('days', 8).format('YYYY-MM-DD HH:mm:ss')
-      endDate = moment().subtract('days', 1).format('YYYY-MM-DD HH:mm:ss')
+      startDate = moment().subtract('days', 8).format('YYYY-MM-DD')
+      endDate = moment().subtract('days', -1).format('YYYY-MM-DD')
       dashboardInfo().then((res) => {
         if (res.code === 200) {
           this.dashboardInfo = res.content
@@ -155,14 +156,17 @@ export default {
       let startDate = ''
       let endDate = ''
       if (param === 'month') {
-        startDate = moment().startOf('month').format('YYYY-MM-DD HH:mm:ss')
-        endDate = moment().startOf('day').format('YYYY-MM-DD HH:mm:ss')
+        startDate = moment().startOf('month').format('YYYY-MM-DD')
+        endDate = moment().startOf('day').format('YYYY-MM-DD')
       } else if (param === 'week') {
-        startDate = moment().startOf('week').format('YYYY-MM-DD HH:mm:ss')
-        endDate = moment().startOf('day').format('YYYY-MM-DD HH:mm:ss')
+        startDate = moment().startOf('week').format('YYYY-MM-DD')
+        endDate = moment().startOf('day').format('YYYY-MM-DD')
       } else if (param === 'year') {
-        startDate = moment().startOf('year').format('YYYY-MM-DD HH:mm:ss')
-        endDate = moment().startOf('day').format('YYYY-MM-DD HH:mm:ss')
+        startDate = moment().startOf('year').format('YYYY-MM-DD')
+        endDate = moment().startOf('day').format('YYYY-MM-DD')
+      } else if (param === '10') {
+        startDate = moment().subtract('days', 8).format('YYYY-MM-DD')
+        endDate = moment().subtract('days', -1).format('YYYY-MM-DD')
       }
       chartInfo({ 'startDate': startDate, 'endDate': endDate }).then((res) => {
         if (res.code === 200) {
@@ -173,7 +177,7 @@ export default {
       })
     },
     loadChatByDate (e) {
-      chartInfo({ 'startDate': e[0].format('YYYY-MM-DD HH:mm:ss'), 'endDate': e[1].format('YYYY-MM-DD HH:mm:ss') }).then((res) => {
+      chartInfo({ 'startDate': e[0].format('YYYY-MM-DD'), 'endDate': e[1].format('YYYY-MM-DD') }).then((res) => {
         if (res.code === 200) {
           this.jobExecData.rows = res.content
         } else {
