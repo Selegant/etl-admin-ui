@@ -11,16 +11,28 @@
               </a-select>
             </a-form-item>
           </a-col>
-          <a-col :md="5" :sm="24">
-            <a-form-item label="运行状态">
-              <a-select v-model="queryParam.logStatus" placeholder="请选择" default-value="1">
-                <a-select-option :value="-1">全部</a-select-option>
-                <a-select-option :value="1">成功</a-select-option>
-                <a-select-option :value="2">失败</a-select-option>
-                <a-select-option :value="3">运行中</a-select-option>
+          <a-col :md="6" :sm="24">
+            <a-form-item label="任务列表">
+              <a-select
+                showSearch
+                placeholder="请选择任务"
+                optionFilterProp="children"
+                v-model="queryParam.jobId"
+              >
+                <a-select-option value="0">全部</a-select-option>
+                <a-select-option v-for="item in jobList" :key="item.id" :value="item.id">{{ item.jobDesc }}</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
+          <!--          <a-col :md="5" :sm="24">-->
+          <!--            <a-form-item label="运行状态">-->
+          <!--              <a-select v-model="queryParam.readMark" placeholder="请选择" >-->
+          <!--                <a-select-option :value="-1">全部</a-select-option>-->
+          <!--                <a-select-option :value="1">未确认</a-select-option>-->
+          <!--                <a-select-option :value="2">已确认</a-select-option>-->
+          <!--              </a-select>-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <a-col :md="8" :sm="24">
             <a-form-item label="调度时间">
               <a-range-picker v-model="queryParam.filterTime" :format="dateFormat"/>
@@ -88,9 +100,14 @@
         </a-tag>
         <a-tag v-else>执行中</a-tag>
       </span>
-      <span slot="action" slot-scope="record">
+      <span slot="log" slot-scope="record">
         <template>
           <a @click="showLogDetail(record)">执行日志</a>
+        </template>
+      </span>
+      <span slot="action" slot-scope="record">
+        <template>
+          <a-button type="primary" size="small" icon="form" @click="confirmLog(record)" >确认</a-button>
         </template>
       </span>
     </s-table>
@@ -109,8 +126,8 @@ import StepByStepModal from './modules/StepByStepModal'
 import CreateForm from './modules/CreateForm'
 import Detail from './modules/Detail'
 import Remark from './modules/Remark'
-import { getJobLogPageList, jobLogDetailCat } from '@/api/log'
-import { getJobInfoSelectList } from '@/api/task'
+import { getJobLogPageList, jobLogDetailCat, readLog } from '@/api/log'
+import { getJobInfoSelectList, jobList } from '@/api/task'
 import TagSelectOption from '../../components/TagSelect/TagSelectOption'
 
 const triggerCodeMap = {
@@ -153,7 +170,7 @@ const handleCodeColorMap = {
 }
 
 export default {
-  name: 'LogManagement',
+  name: 'LogAlertManagement',
   components: {
     Remark,
     TagSelectOption,
@@ -184,11 +201,16 @@ export default {
       },
       // jobGroupList
       jobGroupList: [],
+      jobList: [],
       // 表头
       columns: [
         {
           title: '任务ID',
           dataIndex: 'id'
+        },
+        {
+          title: '任务名称',
+          dataIndex: 'jobDesc'
         },
         {
           title: '调度时间',
@@ -219,6 +241,12 @@ export default {
           title: '执行备注',
           dataIndex: 'handleMsg',
           scopedSlots: { customRender: 'handleMsg' }
+        },
+        {
+          title: '日志',
+          // dataIndex: 'action',
+          width: '150px',
+          scopedSlots: { customRender: 'log' }
         },
         {
           title: '操作',
@@ -266,6 +294,7 @@ export default {
   created () {
     this.queryParam.jobId = this.$route.query.jobId
     this.queryParam.logStatus = this.$route.query.logStatus
+    this.queryParam.readMark = this.$route.query.readMark
     // console.log(this.$route.query)
     this.tableOption()
     this.loadSelectInfo()
@@ -278,8 +307,24 @@ export default {
     }
   },
   methods: {
-    showRemark (record) {
-      this.$refs.remark.modal(record)
+    confirmLog (record) {
+      this.$confirm({
+        title: '系统提示',
+        content: '确定处理完成错误日志？',
+        okText: '确认',
+        cancelText: '取消',
+        onOk: () => {
+          readLog({ logId: record.id })
+            .then(res => {
+              if (res.code === 200) {
+                this.$message.success('确认成功')
+                this.$store.state.unReadCount = this.$store.state.unReadCount - 1
+                this.handleOk()
+              }
+            })
+        },
+        onCancel () {}
+      })
     },
     handleTriggerMsgOk () {
       this.triggerMsgVisible = false
@@ -300,6 +345,9 @@ export default {
       }, 3000)
       this.$refs.detail.modal()
     },
+    showRemark (record) {
+      this.$refs.remark.modal(record)
+    },
     syncLogDetail (logDetailParams) {
       jobLogDetailCat(logDetailParams).then(res => {
         if (res.code === 200) {
@@ -318,6 +366,13 @@ export default {
         this.jobGroupList = res.data.jobGroupList
         // this.queryParam.jobGroup = res.data.jobGroup
         return res.data
+      })
+      jobList().then((res) => {
+        if (res.code === 200) {
+          this.jobList = res.content
+        } else {
+          this.$message.error(res.msg)
+        }
       })
     },
     tableOption () {

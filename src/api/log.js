@@ -3,7 +3,9 @@ import { axios } from '@/utils/request'
 const api = {
   jobLogPageList: 'joblog/pageList',
   jobInfoSelectList: 'jobinfo/selectInfo',
-  jobLogDetailCat: 'joblog/logDetailCat'
+  jobLogDetailCat: 'joblog/logDetailCat',
+  getUnReadCount: 'joblog/getUnReadCount',
+  readLog: 'joblog/readLog'
 }
 
 export default api
@@ -13,6 +15,21 @@ export function getJobLogPageList (parameter) {
     url: api.jobLogPageList,
     method: 'get',
     params: parameter
+  })
+}
+
+export function readLog (parameter) {
+  return axios({
+    url: api.readLog,
+    method: 'put',
+    params: parameter
+  })
+}
+
+export function getUnReadCount () {
+  return axios({
+    url: api.getUnReadCount,
+    method: 'get'
   })
 }
 

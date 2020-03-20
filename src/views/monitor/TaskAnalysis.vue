@@ -22,24 +22,25 @@
           </div>
           <a-tab-pane loading="true" tab="运行监控" key="1">
             <a-row :gutter="48">
-              <a-col :md="6" :sm="24" :push="1">
+              <a-col :md="8" :sm="24" :push="1">
                 <a-select
                   showSearch
                   placeholder="请选择任务"
                   optionFilterProp="children"
-                  style="width: 400px"
+                  style="width:90%"
                   v-model="jobId"
                 >
                   <a-select-option v-for="item in jobList" :key="item.id" :value="item.id">{{ item.jobDesc }}</a-select-option>
                 </a-select>
               </a-col>
-              <a-col :md="2" :sm="24" :push="1">
+              <a-col :md="2" :sm="24">
                 <a-button type="primary" @click="queryMonitor">查询</a-button>
               </a-col>
               <a-col :md="2" :sm="24" >
                 <a-button @click="queryReset">重置</a-button>
               </a-col>
             </a-row>
+            <a-divider />
             <a-row>
               <a-col
                 :push="2"

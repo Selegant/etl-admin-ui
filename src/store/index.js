@@ -20,7 +20,7 @@ export default new Vuex.Store({
     permission
   },
   state: {
-
+    unReadCount: ''
   },
   mutations: {
 

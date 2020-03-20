@@ -59,6 +59,14 @@ export const asyncRouterMap = [
             meta: { title: '日志管理', keepAlive: true, permission: [ 'table' ] }
           },
           {
+            path: '/log/log-alert-management',
+            name: 'LogAlertManagement',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/log/LogAlertManagement'),
+            hidden: true,
+            meta: { title: '告警管理', keepAlive: true, permission: [ 'table' ] }
+          },
+          {
             path: '/group/group-management',
             name: 'GroupManagement',
             hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
