@@ -10,7 +10,8 @@ const api = {
   jobStop: 'jobinfo/stop',
   jobTrigger: 'jobinfo/trigger',
   jobNextTriggerTime: 'jobinfo/nextTriggerTime',
-  jobList: 'jobinfo/list'
+  jobList: 'jobinfo/list',
+  batchUpdateCron: 'jobinfo/batchUpdateCron'
 }
 
 export default api
@@ -89,6 +90,14 @@ export function jobNextTriggerTime (parameter) {
 export function jobInfoAdd (parameter) {
   return axios({
     url: api.jobInfoAdd,
+    method: 'post',
+    data: parameter
+  })
+}
+
+export function batchUpdateCron (parameter) {
+  return axios({
+    url: api.batchUpdateCron,
     method: 'post',
     data: parameter
   })

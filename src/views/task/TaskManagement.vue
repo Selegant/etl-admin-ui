@@ -82,7 +82,8 @@
     </div>
 
     <div class="table-operator">
-      <a-button type="primary" icon="plus" @click="$refs.createModal.add(jobGroupList)">新建</a-button>
+      <a-button type="primary" icon="plus" @click="$refs.createModal.add(jobGroupList,cronList)">新建</a-button>
+      <a-button icon="form" @click="batchUpdateExecTime">批量修改执行时间</a-button>
       <!--      <a-button type="dashed" @click="tableOption">{{ optionAlertShow && '关闭' || '开启' }} alert</a-button>-->
       <a-dropdown v-action:edit v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay">
@@ -99,7 +100,7 @@
     <s-table
       ref="table"
       size="default"
-      rowKey="key"
+      rowKey="id"
       :columns="columns"
       :data="loadData"
       :alert="options.alert"
@@ -153,6 +154,7 @@
     <step-by-step-modal ref="modal" @ok="handleOk"/>
     <task-edit-form ref="taskEditForm" @ok="handleOk"/>
     <execute-form ref="executeForm" @ok="handleOk"/>
+    <cron-update-detail ref="cronUpdateDetail" @ok="handleOk"/>
 
     <a-modal
       title="下次执行时间"
@@ -170,6 +172,7 @@ import StepByStepModal from './modules/StepByStepModal'
 import CreateForm from './modules/CreateForm'
 import TaskEditForm from './modules/TaskEditForm'
 import ExecuteForm from './modules/ExecuteForm'
+import CronUpdateDetail from './modules/CronUpdateDetail'
 import { getJobInfoPageList, getJobInfoSelectList, jobStart, jobStop, jobNextTriggerTime, jobDelete } from '@/api/task'
 import { getCron } from '@/api/cron'
 import TagSelectOption from '../../components/TagSelect/TagSelectOption'
@@ -192,7 +195,8 @@ export default {
     CreateForm,
     ExecuteForm,
     TaskEditForm,
-    StepByStepModal
+    StepByStepModal,
+    CronUpdateDetail
   },
   data () {
     return {
@@ -281,6 +285,21 @@ export default {
     // getRoleList({ t: new Date() })
   },
   methods: {
+    batchUpdateExecTime () {
+      console.log(this.selectedRowKeys.length)
+      if (this.selectedRowKeys.length === 0) {
+        this.$message.error('请选择需要编辑的数据')
+        return
+      }
+      this.$refs.cronUpdateDetail.modal(this.selectedRows, this.cronList)
+      console.log(this.selectedRows)
+      // this.$confirm({
+      //   title: '删除作业',
+      //   content: '确认删除作业吗？',
+      //   onOk: () => {},
+      //   onCancel () {}
+      // })
+    },
     getNextTriggerTime (e) {
       jobNextTriggerTime({ cron: e.jobCron }).then((res) => {
         if (res.code === 200) {
@@ -400,6 +419,7 @@ export default {
       }
     },
     handleOk () {
+      this.$refs.table.clearSelected()
       this.$refs.table.refresh()
     },
     onSelectChange (selectedRowKeys, selectedRows) {
