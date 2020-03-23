@@ -5,7 +5,8 @@ const api = {
   jobInfoSelectList: 'jobinfo/selectInfo',
   jobLogDetailCat: 'joblog/logDetailCat',
   getUnReadCount: 'joblog/getUnReadCount',
-  readLog: 'joblog/readLog'
+  readLog: 'joblog/readLog',
+  readBatchLog: 'joblog/readBatchLog'
 }
 
 export default api
@@ -14,6 +15,14 @@ export function getJobLogPageList (parameter) {
   return axios({
     url: api.jobLogPageList,
     method: 'get',
+    params: parameter
+  })
+}
+
+export function readBatchLog (parameter) {
+  return axios({
+    url: api.readBatchLog,
+    method: 'post',
     params: parameter
   })
 }

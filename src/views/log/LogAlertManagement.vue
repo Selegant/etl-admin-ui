@@ -45,6 +45,7 @@
             <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
               <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
               <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
+              <a-button type="danger" style="margin-left: 8px" @click="allConfirm">一键确认</a-button>
             </span>
           </a-col>
         </a-row>
@@ -69,7 +70,7 @@
     <s-table
       ref="table"
       size="default"
-      rowKey="key"
+      rowKey="id"
       :columns="columns"
       :data="loadData"
       :alert="options.alert"
@@ -126,7 +127,7 @@ import StepByStepModal from './modules/StepByStepModal'
 import CreateForm from './modules/CreateForm'
 import Detail from './modules/Detail'
 import Remark from './modules/Remark'
-import { getJobLogPageList, jobLogDetailCat, readLog } from '@/api/log'
+import { getJobLogPageList, jobLogDetailCat, readLog, readBatchLog } from '@/api/log'
 import { getJobInfoSelectList, jobList } from '@/api/task'
 import TagSelectOption from '../../components/TagSelect/TagSelectOption'
 
@@ -263,6 +264,7 @@ export default {
         }
         return getJobLogPageList(Object.assign(parameter, this.queryParam))
           .then(res => {
+            this.$store.state.unReadCount = res.data.length
             return res
           })
       },
@@ -277,7 +279,7 @@ export default {
           onChange: this.onSelectChange
         }
       },
-      optionAlertShow: true
+      optionAlertShow: false
     }
   },
   filters: {
@@ -307,6 +309,38 @@ export default {
     }
   },
   methods: {
+    allConfirm () {
+      console.log(this.selectedRowKeys.length)
+      if (this.selectedRowKeys.length === 0) {
+        this.$message.error('请选择需要确认的数据')
+        return
+      }
+      this.$confirm({
+        title: '系统提示',
+        content: '确定确认选中的日志？',
+        okText: '确认',
+        cancelText: '取消',
+        onOk: () => {
+          let rowKeys = ''
+          const deleteSize = this.selectedRowKeys.length
+          for (let i = 0; i < this.selectedRowKeys.length; i++) {
+            rowKeys += this.selectedRowKeys[i] + ','
+          }
+          this.selectedRowKeys = []
+          rowKeys = rowKeys.substr(0, rowKeys.length - 1)
+          readBatchLog({ logIds: rowKeys })
+            .then(res => {
+              if (res.code === 200) {
+                this.$message.success('确认成功')
+                this.$store.state.unReadCount = this.$store.state.unReadCount - deleteSize
+                this.$refs.table.clearSelected()
+                this.handleOk()
+              }
+            })
+        },
+        onCancel () {}
+      })
+    },
     confirmLog (record) {
       this.$confirm({
         title: '系统提示',

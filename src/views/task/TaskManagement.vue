@@ -293,12 +293,6 @@ export default {
       }
       this.$refs.cronUpdateDetail.modal(this.selectedRows, this.cronList)
       console.log(this.selectedRows)
-      // this.$confirm({
-      //   title: '删除作业',
-      //   content: '确认删除作业吗？',
-      //   onOk: () => {},
-      //   onCancel () {}
-      // })
     },
     getNextTriggerTime (e) {
       jobNextTriggerTime({ cron: e.jobCron }).then((res) => {
