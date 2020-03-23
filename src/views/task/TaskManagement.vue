@@ -84,6 +84,8 @@
     <div class="table-operator">
       <a-button type="primary" icon="plus" @click="$refs.createModal.add(jobGroupList,cronList)">新建</a-button>
       <a-button icon="form" @click="batchUpdateExecTime">批量修改执行时间</a-button>
+      <a-button type="primary" icon="poweroff" @click="startBatch">批量启动任务</a-button>
+      <a-button type="danger" icon="stop" @click="stopBatch">批量关闭任务</a-button>
       <!--      <a-button type="dashed" @click="tableOption">{{ optionAlertShow && '关闭' || '开启' }} alert</a-button>-->
       <a-dropdown v-action:edit v-if="selectedRowKeys.length > 0">
         <a-menu slot="overlay">
@@ -173,7 +175,7 @@ import CreateForm from './modules/CreateForm'
 import TaskEditForm from './modules/TaskEditForm'
 import ExecuteForm from './modules/ExecuteForm'
 import CronUpdateDetail from './modules/CronUpdateDetail'
-import { getJobInfoPageList, getJobInfoSelectList, jobStart, jobStop, jobNextTriggerTime, jobDelete } from '@/api/task'
+import { getJobInfoPageList, getJobInfoSelectList, jobStart, jobStop, jobNextTriggerTime, jobDelete, startBatch, stopBatch } from '@/api/task'
 import { getCron } from '@/api/cron'
 import TagSelectOption from '../../components/TagSelect/TagSelectOption'
 
@@ -285,6 +287,66 @@ export default {
     // getRoleList({ t: new Date() })
   },
   methods: {
+    startBatch () {
+      console.log(this.selectedRowKeys.length)
+      if (this.selectedRowKeys.length === 0) {
+        this.$message.error('请选择需要启动的任务')
+        return
+      }
+      this.$confirm({
+        title: '系统提示',
+        content: '确定确认启动选中的任务？',
+        okText: '确认',
+        cancelText: '取消',
+        onOk: () => {
+          let rowKeys = ''
+          for (let i = 0; i < this.selectedRowKeys.length; i++) {
+            rowKeys += this.selectedRowKeys[i] + ','
+          }
+          this.selectedRowKeys = []
+          rowKeys = rowKeys.substr(0, rowKeys.length - 1)
+          startBatch({ jobIds: rowKeys })
+            .then(res => {
+              if (res.code === 200) {
+                this.$message.success('批量启动成功')
+                this.$refs.table.clearSelected()
+                this.handleOk()
+              }
+            })
+        },
+        onCancel () {}
+      })
+    },
+    stopBatch () {
+      console.log(this.selectedRowKeys.length)
+      if (this.selectedRowKeys.length === 0) {
+        this.$message.error('请选择需要停止的任务')
+        return
+      }
+      this.$confirm({
+        title: '系统提示',
+        content: '确定确认停止选中的任务？',
+        okText: '确认',
+        cancelText: '取消',
+        onOk: () => {
+          let rowKeys = ''
+          for (let i = 0; i < this.selectedRowKeys.length; i++) {
+            rowKeys += this.selectedRowKeys[i] + ','
+          }
+          this.selectedRowKeys = []
+          rowKeys = rowKeys.substr(0, rowKeys.length - 1)
+          stopBatch({ jobIds: rowKeys })
+            .then(res => {
+              if (res.code === 200) {
+                this.$message.success('批量关闭成功')
+                this.$refs.table.clearSelected()
+                this.handleOk()
+              }
+            })
+        },
+        onCancel () {}
+      })
+    },
     batchUpdateExecTime () {
       console.log(this.selectedRowKeys.length)
       if (this.selectedRowKeys.length === 0) {

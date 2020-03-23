@@ -11,10 +11,28 @@ const api = {
   jobTrigger: 'jobinfo/trigger',
   jobNextTriggerTime: 'jobinfo/nextTriggerTime',
   jobList: 'jobinfo/list',
-  batchUpdateCron: 'jobinfo/batchUpdateCron'
+  batchUpdateCron: 'jobinfo/batchUpdateCron',
+  startBatch: 'jobinfo/startBatch',
+  stopBatch: 'jobinfo/stopBatch'
 }
 
 export default api
+
+export function startBatch (parameter) {
+  return axios({
+    url: api.startBatch,
+    method: 'post',
+    params: parameter
+  })
+}
+
+export function stopBatch (parameter) {
+  return axios({
+    url: api.stopBatch,
+    method: 'post',
+    params: parameter
+  })
+}
 
 export function getJobInfoPageList (parameter) {
   return axios({

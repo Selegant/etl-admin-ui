@@ -30,6 +30,7 @@
                   style="width:90%"
                   v-model="jobId"
                 >
+                  <a-select-option value="">全部</a-select-option>
                   <a-select-option v-for="item in jobList" :key="item.id" :value="item.id">{{ item.jobDesc }}</a-select-option>
                 </a-select>
               </a-col>
