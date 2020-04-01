@@ -65,7 +65,6 @@ export default {
               if (res.code === 200) {
                 this.$message.success('执行成功')
                 this.visible = false
-                this.confirmLoading = false
               } else {
                 this.$message.error(res.msg)
               }
@@ -76,7 +75,6 @@ export default {
       })
     },
     handleCancel () {
-      this.confirmLoading = false
       this.visible = false
     }
   }

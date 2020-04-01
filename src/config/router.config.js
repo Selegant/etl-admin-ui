@@ -99,6 +99,24 @@ export const asyncRouterMap = [
             meta: { title: '转换管理', keepAlive: true, permission: [ 'table' ] }
           }
         ]
+      },
+
+      // datax
+      {
+        path: '/datax',
+        name: 'datax',
+        component: PageView,
+        redirect: '/datax/dataSource-management',
+        meta: { title: 'DATAX', icon: 'close', permission: [ 'table' ] },
+        children: [
+          {
+            path: '/datax/dataSource-management',
+            name: 'DataSourceManagement',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/datax/DataSourceManagement'),
+            meta: { title: '数据源管理', keepAlive: true, permission: [ 'table' ] }
+          }
+        ]
       }
     ]
   },

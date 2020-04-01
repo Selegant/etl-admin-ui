@@ -7,7 +7,9 @@
     @ok="clean"
     @cancel="clean"
   >
-    <p v-html="this.$parent.$parent.logDetail"></p>
+    <div style="overflow: auto;height: calc(60vh)">
+      <p v-html="this.$parent.$parent.logDetail"></p>
+    </div>
   </a-modal>
 </template>
 
