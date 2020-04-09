@@ -115,6 +115,13 @@ export const asyncRouterMap = [
             hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
             component: () => import('@/views/datax/DataSourceManagement'),
             meta: { title: '数据源管理', keepAlive: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/datax/datax-job-management',
+            name: 'DataxJobManagement',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/datax/DataxJobManagement'),
+            meta: { title: 'DataX任务', keepAlive: true, permission: [ 'table' ] }
           }
         ]
       }

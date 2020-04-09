@@ -32,9 +32,9 @@
           :wrapperCol="wrapperCol"
         >
           <a-select placeholder="请选择" v-decorator="['datasource.datasource', {rules:[{required: true, message: '请选择数据源类型'}]}]">
-            <a-select-option value="Oracle">Oracle</a-select-option>
-            <a-select-option value="Mysql">Mysql</a-select-option>
-            <a-select-option value="Phoenix">Phoenix</a-select-option>
+            <a-select-option value="oracle">Oracle</a-select-option>
+            <a-select-option value="mysql">Mysql</a-select-option>
+            <a-select-option value="phoenix">Phoenix</a-select-option>
           </a-select>
         </a-form-item>
       </a-row>

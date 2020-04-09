@@ -5,7 +5,11 @@ const api = {
   testDataSource: 'dataX/testDataSource',
   updateDataSource: 'dataX/updateDataSource',
   saveDataSource: 'dataX/saveDataSource',
-  deleteDataSource: 'dataX/deleteDataSource'
+  deleteDataSource: 'dataX/deleteDataSource',
+  dataXDatasourceList: 'dataX/datasource/list',
+  getTables: 'dataX/getTables',
+  getColumns: 'dataX/getColumns',
+  generateDataXJson: 'dataX/generateDataXJson'
 }
 
 export default api
@@ -15,6 +19,38 @@ export function dataXDatasourcePageList (parameter) {
     url: api.dataXDatasourcePageList,
     method: 'post',
     params: parameter
+  })
+}
+
+export function dataXDatasourceList (parameter) {
+  return axios({
+    url: api.dataXDatasourceList,
+    method: 'get',
+    params: parameter
+  })
+}
+
+export function getTables (parameter) {
+  return axios({
+    url: api.getTables,
+    method: 'get',
+    params: parameter
+  })
+}
+
+export function getColumns (parameter) {
+  return axios({
+    url: api.getColumns,
+    method: 'get',
+    params: parameter
+  })
+}
+
+export function generateDataXJson (parameter) {
+  return axios({
+    url: api.generateDataXJson,
+    method: 'post',
+    data: parameter
   })
 }
 

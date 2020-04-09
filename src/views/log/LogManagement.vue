@@ -114,6 +114,9 @@ import { getJobInfoSelectList } from '@/api/task'
 import TagSelectOption from '../../components/TagSelect/TagSelectOption'
 
 const triggerCodeMap = {
+  0: {
+    text: '执行中'
+  },
   200: {
     text: '成功'
   },

@@ -1,13 +1,6 @@
 <template>
-  <a-modal
-    title="新建任务"
-    :width="840"
-    :visible="visible"
-    :confirmLoading="confirmLoading"
-    @ok="handleSubmit"
-    @cancel="cancel"
-  >
-    <a-form @submit="handleSubmit" :form="form">
+  <div>
+    <a-form :form="form">
       <a-row class="form-row" :gutter="24">
         <a-col :lg="12" :md="24" :sm="48">
           <a-form-item
@@ -15,7 +8,7 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-select placeholder="请选择" v-decorator="['record.jobGroup', {rules:[{required: true, message: '请选择执行器'}]}]">
+            <a-select placeholder="请选择" v-decorator="['jobGroup', {rules:[{required: true, message: '请选择执行器'}]}]">
               <a-select-option v-for="item in jobGroupList" :key="item.id" :value="item.id">{{ item.title }}</a-select-option>
             </a-select>
           </a-form-item>
@@ -26,7 +19,7 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-input v-decorator="['record.jobDesc', {rules:[{required: true, message: '请输入任务描述'}]}]" />
+            <a-input v-decorator="['jobDesc', {rules:[{required: true, message: '请输入任务描述'}]}]" />
           </a-form-item>
         </a-col>
       </a-row>
@@ -37,7 +30,7 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-select placeholder="请选择" v-decorator="['record.executorRouteStrategy', {rules:[{required: true, message: '请选择路由策略'}]}]">
+            <a-select placeholder="请选择" v-decorator="['executorRouteStrategy', {rules:[{required: true, message: '请选择路由策略'}]}]">
               <a-select-option value="FIRST">第一个</a-select-option>
               <a-select-option value="LAST">最后一个</a-select-option>
               <a-select-option value="ROUND">轮询</a-select-option>
@@ -61,7 +54,7 @@
               showSearch
               placeholder="请选择Cron表达式"
               optionFilterProp="children"
-              v-decorator="['record.jobCron', {rules:[{required: true, message: '请选择Cron表达式'}]}]"
+              v-decorator="['jobCron', {rules:[{required: true, message: '请选择Cron表达式'}]}]"
             >
               <a-select-option v-for="item in cronList" :key="item.id" :value="item.cron">{{ item.cronDesc }}</a-select-option>
             </a-select>
@@ -75,7 +68,7 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-select placeholder="请选择" disabled v-decorator="['record.glueType', {rules:[{required: true, message: '请选择运行模式'}],initialValue:'BEAN'}]">
+            <a-select placeholder="请选择" disabled v-decorator="['glueType', {rules:[{required: true, message: '请选择运行模式'}],initialValue:'BEAN'}]">
               <a-select-option value="BEAN">BEAN</a-select-option>
             </a-select>
           </a-form-item>
@@ -86,7 +79,7 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-input v-decorator="['record.executorHandler', {rules:[{required: true, message: '请输入JobHandler'}]}]" />
+            <a-input v-decorator="['executorHandler', {rules:[{required: true, message: '请输入JobHandler'}]}]" />
           </a-form-item>
         </a-col>
       </a-row>
@@ -97,7 +90,7 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-select placeholder="请选择" v-decorator="['record.executorBlockStrategy', {rules:[{required: true, message: '请选择阻塞处理策略'}]}]">
+            <a-select placeholder="请选择" v-decorator="['executorBlockStrategy', {rules:[{required: true, message: '请选择阻塞处理策略'}]}]">
               <a-select-option value="SERIAL_EXECUTION">单机串行</a-select-option>
               <a-select-option value="DISCARD_LATER">丢弃后续调度</a-select-option>
               <a-select-option value="COVER_EARLY">覆盖之前调度</a-select-option>
@@ -110,7 +103,7 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-input v-decorator="['record.childJobid', {rules:[{required: false, message: '请输入子任务ID'}]}]"/>
+            <a-input v-decorator="['childJobid', {rules:[{required: false, message: '请输入子任务ID'}]}]"/>
           </a-form-item>
         </a-col>
       </a-row>
@@ -121,7 +114,7 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-input v-decorator="['record.executorTimeout', {rules:[{required: false, message: '请输入任务超时时间'}]}]"/>
+            <a-input v-decorator="['executorTimeout', {rules:[{required: false, message: '请输入任务超时时间'}]}]"/>
           </a-form-item>
         </a-col>
         <a-col :lg="12" :md="24" :sm="48">
@@ -130,7 +123,7 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-input v-decorator="['record.executorFailRetryCount', {rules:[{required: false, message: '请输入失败重试次数'}]}]"/>
+            <a-input v-decorator="['executorFailRetryCount', {rules:[{required: false, message: '请输入失败重试次数'}]}]"/>
           </a-form-item>
         </a-col>
       </a-row>
@@ -141,7 +134,7 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-input v-decorator="['record.author', {rules:[{required: true, message: '请输入负责人'}]}]" />
+            <a-input v-decorator="['author', {rules:[{required: true, message: '请输入负责人'}]}]" />
           </a-form-item>
         </a-col>
         <a-col :lg="12" :md="24" :sm="48">
@@ -150,7 +143,7 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-input v-decorator="['record.alarmEmail', {rules:[{required: false, message: '请输入报警邮件'}]}]" />
+            <a-input v-decorator="['alarmEmail', {rules:[{required: false, message: '请输入报警邮件'}]}]" />
           </a-form-item>
         </a-col>
       </a-row>
@@ -164,18 +157,33 @@
             <a-textarea
               rows="10"
               placeholder="请输入任务参数"
-              v-decorator="['record.executorParam',{rules: [{ required: false, message: '请输入任务参数' }]}]" />
+              v-decorator="['executorParam',{rules: [{ required: false, message: '请输入任务参数' }]}]" />
+          </a-form-item>
+        </a-col>
+      </a-row>
+      <a-row class="form-row" :gutter="24">
+        <a-col :lg="12" :md="24" :sm="48">
+          <a-form-item :wrapperCol="{span: 19, offset: 5}">
+            <a-button :loading="loading" type="primary" @click="nextStep">提交</a-button>
+            <a-button style="margin-left: 8px" @click="prevStep">上一步</a-button>
           </a-form-item>
         </a-col>
       </a-row>
     </a-form>
-  </a-modal>
+  </div>
 </template>
 
 <script>
-import { jobInfoAdd } from '@/api/task'
+import { jobInfoAdd, getJobInfoSelectList } from '@/api/task'
+import { getCron } from '@/api/cron'
 export default {
-  name: 'CreateForm',
+  name: 'Step2',
+  props: {
+    executeParam: {
+      type: String,
+      default: ''
+    }
+  },
   data () {
     return {
       jobGroupList: [],
@@ -188,45 +196,109 @@ export default {
         xs: { span: 24 },
         sm: { span: 13 }
       },
-      confirmLoading: false,
       visible: false,
+      loading: false,
       form: this.$form.createForm(this)
     }
   },
+  created () {
+    // this.form.setFieldsValue({
+    //   executorParam: this.executeParam
+    // })
+    this.$nextTick(() => {
+      this.form.setFieldsValue({
+        executorParam: this.executeParam
+      })
+    })
+    this.loadSelectInfo()
+    // const { form: { validateFields } } = this
+    // validateFields((err, values) => {
+    //   if (!err) {
+    //     console.log('表单 values', values)
+    //   } else {
+    //   }
+    // })
+  },
   methods: {
-    add (jobGroupList, cronList) {
-      this.visible = true
-      this.jobGroupList = jobGroupList
-      this.cronList = cronList
-    },
-    cancel () {
-      this.visible = false
-      this.form.resetFields()
-    },
-    handleSubmit () {
+    nextStep (resultData) {
+      // console.log(resultData)
+      // const { form: { setFieldsValue } } = this
+      console.log(this.form)
+      // this.$nextTick(() => {
+      //   setFieldsValue({ record: record })
+      // })
       const { form: { validateFields } } = this
-      this.confirmLoading = true
-      validateFields((errors, values) => {
-        if (!errors) {
-          jobInfoAdd(values.record)
+      const that = this
+      that.loading = true
+      validateFields((err, values) => {
+        if (!err) {
+          jobInfoAdd(values)
             .then(res => {
               if (res.code === 200) {
-                this.$message.success('新增成功')
-                this.visible = false
+                // this.$message.success('新增成功')
                 this.form.resetFields()
-                this.confirmLoading = false
-                this.form.resetFields()
-                this.$emit('ok')
+                that.loading = false
+                this.$emit('nextStep')
               } else {
                 this.$message.error(res.msg)
-                this.confirmLoading = false
+                that.loading = false
               }
             })
+          // console.log('表单 values', values)
+          // that.timer = setTimeout(function () {
+          //   that.loading = false
+          //   that.$emit('nextStep')
+          // }, 1500)
         } else {
-          this.confirmLoading = false
+          that.loading = false
         }
       })
+    },
+    loadSelectInfo () {
+      getJobInfoSelectList().then(res => {
+        console.log(res.data)
+        this.jobGroupList = res.data.jobGroupList
+        // this.queryParam.jobGroup = res.data.jobGroup
+        return res.data
+      })
+      getCron().then(res => {
+        this.cronList = res.data
+      })
+    },
+    prevStep () {
+      this.$emit('prevStep')
     }
+    // handleSubmit () {
+    //   const { form: { validateFields } } = this
+    //   validateFields((errors, values) => {
+    //     if (!errors) {
+    //       jobInfoAdd(values.record)
+    //         .then(res => {
+    //           if (res.code === 200) {
+    //             this.$message.success('新增成功')
+    //             this.visible = false
+    //             this.form.resetFields()
+    //             this.$emit('ok')
+    //           } else {
+    //             this.$message.error(res.msg)
+    //           }
+    //         })
+    //     } else {
+    //     }
+    //   })
+    // }
   }
 }
 </script>
+
+<style lang="less" scoped>
+  .stepFormText {
+    margin-bottom: 24px;
+
+    .ant-form-item-label,
+    .ant-form-item-control {
+      line-height: 22px;
+    }
+  }
+
+</style>
