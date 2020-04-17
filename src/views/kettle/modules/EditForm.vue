@@ -93,7 +93,7 @@
           <!--          <a-textarea-->
           <!--            v-html="JSON.stringify(job.kettleParams, null, 4)" />-->
           <!--          <pre style="white-space: pre-wrap;word-wrap: break-word;">{{job.kettleParams}}</pre>-->
-          <json-viewer :value="JSON.parse(job.kettleParams)" :expand-depth="4" copyable sort></json-viewer>
+          <json-viewer :value="Object.keys(job).length!==0?JSON.parse(job.kettleParams):''" :expand-depth="4" copyable sort></json-viewer>
         </a-form-item>
       </a-row>
     </a-form>

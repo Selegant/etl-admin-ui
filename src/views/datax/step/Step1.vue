@@ -343,8 +343,11 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.ant-checkbox-group-item {
-  width: 100%;
+.ant-checkbox-width {
+  margin-top: 100px;
+  label {
+    width: 100%;
+  }
 }
 .step-form-style-desc {
   padding: 0 56px;

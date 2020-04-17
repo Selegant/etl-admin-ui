@@ -8,7 +8,7 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-select placeholder="请选择" v-decorator="['jobGroup', {rules:[{required: true, message: '请选择执行器'}]}]">
+            <a-select placeholder="请选择" v-decorator="['jobGroup', {rules:[{required: true, message: '请选择执行器'}],initialValue:12}]">
               <a-select-option v-for="item in jobGroupList" :key="item.id" :value="item.id">{{ item.title }}</a-select-option>
             </a-select>
           </a-form-item>
@@ -79,7 +79,7 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-input v-decorator="['executorHandler', {rules:[{required: true, message: '请输入JobHandler'}]}]" />
+            <a-input v-decorator="['executorHandler', {rules:[{required: true, message: '请输入JobHandler'}],initialValue:'dataxJobHandler'}]" />
           </a-form-item>
         </a-col>
       </a-row>
@@ -134,7 +134,7 @@
             :labelCol="labelCol"
             :wrapperCol="wrapperCol"
           >
-            <a-input v-decorator="['author', {rules:[{required: true, message: '请输入负责人'}]}]" />
+            <a-input v-decorator="['author', {rules:[{required: true, message: '请输入负责人'}],initialValue:'dataX'}]" />
           </a-form-item>
         </a-col>
         <a-col :lg="12" :md="24" :sm="48">
@@ -232,6 +232,7 @@ export default {
       that.loading = true
       validateFields((err, values) => {
         if (!err) {
+          values.ObjectType = 4
           jobInfoAdd(values)
             .then(res => {
               if (res.code === 200) {
