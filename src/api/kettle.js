@@ -8,7 +8,8 @@ const api = {
   kettleTruncateJob: 'kettle/job/truncateJob',
   kettleTruncateTrans: 'kettle/trans/truncateTrans',
   kettleJobAndTransDelete: 'kettle/deleteBatchResource',
-  kettleJobGenerateParams: 'kettle/job/generateParams'
+  kettleJobGenerateParams: 'kettle/job/generateParams',
+  collectTimePageList: 'collectTime/pageList'
 }
 
 export default api
@@ -16,6 +17,14 @@ export default api
 export function kettleJobPageList (parameter) {
   return axios({
     url: api.kettleJobPageList,
+    method: 'post',
+    params: parameter
+  })
+}
+
+export function collectTimePageList (parameter) {
+  return axios({
+    url: api.collectTimePageList,
     method: 'post',
     params: parameter
   })

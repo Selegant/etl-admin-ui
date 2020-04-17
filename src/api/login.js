@@ -28,6 +28,14 @@ export function getSmsCaptcha (parameter) {
   })
 }
 
+export function changePassword (parameter) {
+  return axios({
+    url: '/user/changePassword',
+    method: 'post',
+    params: parameter
+  })
+}
+
 export function getInfo () {
   return axios({
     url: '/user/info',

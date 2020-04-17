@@ -120,6 +120,9 @@
           {{ text | statusFilter }}
         </a-tag>
       </span>
+      <span slot="cronHandler" slot-scope="text">
+          {{ text | cronFilter }}
+      </span>
       <span slot="action" slot-scope="record">
         <template>
           <a-dropdown>
@@ -188,6 +191,48 @@ const statusMap = {
   }
 }
 
+const cronMap = {
+  '*/5 * * * * ?': {
+    text: '5秒执行一次'
+  },
+  '0 0/1 * * * ?': {
+    text: '1分钟执行一次'
+  },
+  '0 0/2 * * * ?': {
+    text: '2分钟执行一次'
+  },
+  '0 0/3 * * * ?': {
+    text: '3分钟执行一次'
+  },
+  '0 0/5 * * * ?': {
+    text: '5分钟执行一次'
+  },
+  '0 0/30 * * * ?': {
+    text: '30分钟执行一次'
+  },
+  '0 0 0/1 * * ?': {
+    text: '1小时执行一次'
+  },
+  '0 0 0/2 * * ?': {
+    text: '2小时执行一次'
+  },
+  '0 0 0/3 * * ?': {
+    text: '3小时执行一次'
+  },
+  '0 0 0 * * ?': {
+    text: '每日0点执行一次'
+  },
+  '0 0 1 * * ?': {
+    text: '每日1点执行一次'
+  },
+  '0 0 2 * * ?': {
+    text: '每日2点执行一次'
+  },
+  '0 */15 * * * ?': {
+    text: '每15分钟执行一次'
+  }
+}
+
 export default {
   name: 'TaskManagement',
   components: {
@@ -232,7 +277,8 @@ export default {
         },
         {
           title: 'Cron',
-          dataIndex: 'jobCron'
+          dataIndex: 'jobCron',
+          scopedSlots: { customRender: 'cronHandler' }
         },
         {
           title: '负责人',
@@ -279,6 +325,9 @@ export default {
     },
     statusTypeFilter (type) {
       return statusMap[type].status
+    },
+    cronFilter (cron) {
+      return cronMap[cron].text
     }
   },
   created () {
