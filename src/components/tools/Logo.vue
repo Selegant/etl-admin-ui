@@ -1,6 +1,6 @@
 <template>
   <div class="logo">
-    <router-link :to="{name:'dashboard'}">
+    <router-link :to="{name:'index'}">
       <LogoSvg alt="logo" />
       <h1 v-if="showTitle">{{ title }}</h1>
     </router-link>
@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import LogoSvg from '@/assets/logo.svg?inline'
+import LogoSvg from '@/assets/ETL.svg?inline'
 
 export default {
   name: 'Logo',

@@ -194,6 +194,10 @@ export default {
           dataIndex: 'id'
         },
         {
+          title: '任务描述',
+          dataIndex: 'jobDesc'
+        },
+        {
           title: '调度时间',
           dataIndex: 'triggerTime',
           scopedSlots: { customRender: 'handleTime' }

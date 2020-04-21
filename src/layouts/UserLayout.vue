@@ -4,12 +4,12 @@
       <div class="top">
         <div class="header">
           <a href="/">
-            <img src="~@/assets/logo.svg" class="logo" alt="logo">
+            <img src="~@/assets/logo.png" class="logo" alt="logo">
             <span class="title">ETL Management</span>
           </a>
         </div>
         <div class="desc">
-<!--          Ant Design 是西湖区最具影响力的 Web 设计规范-->
+          <!--          Ant Design 是西湖区最具影响力的 Web 设计规范-->
         </div>
       </div>
 
@@ -92,7 +92,7 @@ export default {
           }
 
           .logo {
-            height: 44px;
+            height: 50px;
             vertical-align: top;
             margin-right: 16px;
             border-style: none;
