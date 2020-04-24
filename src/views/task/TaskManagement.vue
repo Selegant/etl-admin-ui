@@ -121,7 +121,7 @@
         </a-tag>
       </span>
       <span slot="cronHandler" slot-scope="text">
-          {{ text | cronFilter }}
+        {{ text | cronFilter }}
       </span>
       <span slot="action" slot-scope="record">
         <template>

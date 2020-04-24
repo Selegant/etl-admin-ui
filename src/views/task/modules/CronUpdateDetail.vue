@@ -9,7 +9,7 @@
   >
     <a-row :gutter="48">
       <a-col :md="6" :sm="24" v-for="item in jobList" :key="item.id">
-        <p> {{item.jobDesc}} </p>
+        <p> {{ item.jobDesc }} </p>
       </a-col>
     </a-row>
     <a-row>
@@ -20,7 +20,7 @@
         v-model="cron"
         style="width: 250px"
       >
-        <a-select-option  v-for="item in cronList" :key="item.id" :value="item.cron">{{ item.cronDesc }}</a-select-option>
+        <a-select-option v-for="item in cronList" :key="item.id" :value="item.cron">{{ item.cronDesc }}</a-select-option>
       </a-select>
     </a-row>
   </a-modal>
