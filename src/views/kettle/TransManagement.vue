@@ -267,6 +267,8 @@ export default {
               } else {
                 this.$message.error(res.msg)
               }
+            }).catch(() => {
+              this.$message.error('同步转换失败')
             })
         },
         onCancel () {}

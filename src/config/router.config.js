@@ -85,6 +85,13 @@ export const asyncRouterMap = [
         meta: { title: 'KETTLE', icon: 'project', permission: [ 'table' ] },
         children: [
           {
+            path: '/kettle/repository-management',
+            name: 'RepositoryManagement',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/kettle/RepositoryManagement'),
+            meta: { title: '资源库管理', keepAlive: true, permission: [ 'table' ] }
+          },
+          {
             path: '/kettle/job-management',
             name: 'JobManagement',
             hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu

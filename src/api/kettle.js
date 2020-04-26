@@ -9,7 +9,12 @@ const api = {
   kettleTruncateTrans: 'kettle/trans/truncateTrans',
   kettleJobAndTransDelete: 'kettle/deleteBatchResource',
   kettleJobGenerateParams: 'kettle/job/generateParams',
-  collectTimePageList: 'collectTime/pageList'
+  collectTimePageList: 'collectTime/pageList',
+  repositoryPageList: 'repository/pageList',
+  repositoryTestConnection: 'repository/testConnection',
+  saveRepository: 'repository/save',
+  checkRepository: 'repository/check',
+  deleteRepository: 'repository/delete'
 }
 
 export default api
@@ -25,6 +30,46 @@ export function kettleJobPageList (parameter) {
 export function collectTimePageList (parameter) {
   return axios({
     url: api.collectTimePageList,
+    method: 'post',
+    params: parameter
+  })
+}
+
+export function repositoryPageList (parameter) {
+  return axios({
+    url: api.repositoryPageList,
+    method: 'post',
+    params: parameter
+  })
+}
+
+export function saveRepository (parameter) {
+  return axios({
+    url: api.saveRepository,
+    method: 'post',
+    params: parameter
+  })
+}
+
+export function checkRepository (parameter) {
+  return axios({
+    url: api.checkRepository,
+    method: 'post',
+    params: parameter
+  })
+}
+
+export function deleteRepository (parameter) {
+  return axios({
+    url: api.deleteRepository,
+    method: 'delete',
+    params: parameter
+  })
+}
+
+export function repositoryTestConnection (parameter) {
+  return axios({
+    url: api.repositoryTestConnection,
     method: 'post',
     params: parameter
   })

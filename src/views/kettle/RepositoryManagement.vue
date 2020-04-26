@@ -19,9 +19,9 @@
     </div>
 
     <div class="table-operator">
-      <a-button type="primary" icon="reload" @click="kettleSyncJob">同步作业</a-button>
-      <a-button type="danger" icon="delete" @click="kettleTruncateJob">清空作业</a-button>
-      <a-button type="danger" icon="close" @click="kettleJobAndTransDelete">批量删除</a-button>
+      <a-button type="primary" icon="plus" @click="$refs.createModal.add()">新增资源库</a-button>
+      <!--      <a-button type="danger" icon="delete" @click="kettleTruncateJob">清空作业</a-button>-->
+      <!--      <a-button type="danger" icon="close" @click="kettleJobAndTransDelete">批量删除</a-button>-->
       <!--      <a-button type="dashed" @click="tableOption">{{ optionAlertShow && '关闭' || '开启' }} alert</a-button>-->
       <!--      <a-dropdown v-action:edit v-if="selectedRowKeys.length > 0">-->
       <!--        <a-menu slot="overlay">-->
@@ -55,6 +55,9 @@
         <template>
           <a-button type="primary" size="small" icon="form" @click="$refs.editForm.edit(record)">编辑</a-button>
           <a-divider type="vertical" />
+          <a-button icon="select" size="small" v-if="record.useFlag===1" disabled >当前</a-button>
+          <a-button type="primary" size="small" icon="check" v-if="record.useFlag===0" @click="check(record)">切换</a-button>
+          <a-divider type="vertical" />
           <a-button type="danger" size="small" icon="delete" @click="del(record)">删除</a-button>
         </template>
       </span>
@@ -78,10 +81,10 @@
 import moment from 'moment'
 import { STable, Ellipsis } from '@/components'
 import StepByStepModal from './modules/StepByStepModal'
-import CreateForm from './modules/CreateForm'
-import EditForm from './modules/EditForm'
+import CreateForm from './modules/CreateRepositoryForm'
+import EditForm from './modules/EditRepositoryForm'
 import ExecuteForm from './modules/ExecuteForm'
-import { kettleJobPageList, kettleSyncJob, kettleTruncateJob, kettleJobAndTransDelete } from '@/api/kettle'
+import { repositoryPageList, checkRepository, deleteRepository } from '@/api/kettle'
 import TagSelectOption from '../../components/TagSelect/TagSelectOption'
 
 const objectTypeMap = {
@@ -94,7 +97,7 @@ const objectTypeMap = {
 }
 
 export default {
-  name: 'JobManagement',
+  name: 'RepositoryManagement',
   components: {
     TagSelectOption,
     STable,
@@ -118,45 +121,48 @@ export default {
       // 表头
       columns: [
         {
-          title: '作业ID',
-          dataIndex: 'id'
+          title: 'ID',
+          dataIndex: 'repositoryId'
         },
         {
-          title: '作业名称',
-          dataIndex: 'name'
+          title: '资源库名称',
+          dataIndex: 'repositoryName'
         },
         {
-          title: '作业地址',
-          dataIndex: 'repositoryDirectory'
+          title: '资源库数据库类型',
+          dataIndex: 'repositoryType'
+        },
+        // {
+        //   title: '资源库数据库访问模式',
+        //   dataIndex: 'databaseAccess'
+        // },
+        {
+          title: '资源库地址',
+          dataIndex: 'databaseHost'
         },
         {
-          title: '编辑者',
-          dataIndex: 'modifiedUser'
+          title: '资源库端口号',
+          dataIndex: 'databasePort'
         },
         {
-          title: '资源类型',
-          dataIndex: 'objectType',
-          scopedSlots: { customRender: 'objectType' }
+          title: '资源库数据库名称',
+          dataIndex: 'databaseName'
         },
         {
           title: '编辑时间',
-          dataIndex: 'modifiedDate'
-        },
-        {
-          title: '同步时间',
-          dataIndex: 'updateTime'
+          dataIndex: 'editTime'
         },
         {
           title: '操作',
           // dataIndex: 'action',
-          width: '250px',
+          width: '300px',
           scopedSlots: { customRender: 'action' }
         }
       ],
       // 加载数据方法 必须为 Promise 对象
       loadData: parameter => {
         console.log('loadData.parameter', parameter)
-        return kettleJobPageList(Object.assign(parameter, this.queryParam))
+        return repositoryPageList(Object.assign(parameter, this.queryParam))
           .then(res => {
             return res
           })
@@ -172,7 +178,7 @@ export default {
           onChange: this.onSelectChange
         }
       },
-      optionAlertShow: false,
+      optionAlertShow: true,
       nextTriggerTimeShow: false
     }
   },
@@ -191,12 +197,11 @@ export default {
         title: '删除作业',
         content: '确认删除作业吗？',
         onOk: () => {
-          const rowKeys = record.id
-          kettleJobAndTransDelete({ ids: rowKeys })
+          const rowKeys = record.repositoryId
+          deleteRepository({ id: rowKeys })
             .then(res => {
               if (res.code === 200) {
-                this.$message.success('删除作业成功')
-                this.$refs.table.clearSelected()
+                this.$message.success('删除资源成功')
                 this.handleOk()
               } else {
                 this.$message.error(res.msg)
@@ -206,69 +211,20 @@ export default {
         onCancel () {}
       })
     },
-    kettleJobAndTransDelete () {
-      console.log(this.selectedRowKeys.length)
-      if (this.selectedRowKeys.length === 0) {
-        this.$message.error('请选择需要删除的数据')
-        return
-      }
+    check (record) {
       this.$confirm({
-        title: '删除作业',
-        content: '确认删除作业吗？',
+        title: '切换数据源',
+        content: '确认切换数据源吗？切换数据源会清空所有已运行记录',
         onOk: () => {
-          let rowKeys = ''
-          for (let i = 0; i < this.selectedRowKeys.length; i++) {
-            rowKeys += this.selectedRowKeys[i] + ','
-          }
-          this.selectedRowKeys = []
-          rowKeys = rowKeys.substr(0, rowKeys.length - 1)
-          kettleJobAndTransDelete({ ids: rowKeys })
+          const rowKeys = record.repositoryId
+          checkRepository({ id: rowKeys })
             .then(res => {
               if (res.code === 200) {
-                this.$message.success('清空作业成功')
-                this.$refs.table.clearSelected()
+                this.$message.success('切换数据源成功')
                 this.handleOk()
               } else {
                 this.$message.error(res.msg)
               }
-            })
-        },
-        onCancel () {}
-      })
-    },
-    kettleTruncateJob () {
-      this.$confirm({
-        title: '清空作业',
-        content: '确认清空作业吗？',
-        onOk: () => {
-          kettleTruncateJob()
-            .then(res => {
-              if (res.code === 200) {
-                this.$message.success('清空作业成功')
-                this.handleOk()
-              } else {
-                this.$message.error(res.msg)
-              }
-            })
-        },
-        onCancel () {}
-      })
-    },
-    kettleSyncJob () {
-      this.$confirm({
-        title: '同步作业',
-        content: '确认重新同步作业吗？',
-        onOk: () => {
-          kettleSyncJob()
-            .then(res => {
-              if (res.code === 200) {
-                this.$message.success('同步作业成功')
-                this.handleOk()
-              } else {
-                this.$message.error(res.msg)
-              }
-            }).catch(() => {
-              this.$message.error('同步作业失败')
             })
         },
         onCancel () {}
