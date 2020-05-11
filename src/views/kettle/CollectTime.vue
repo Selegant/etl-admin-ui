@@ -107,6 +107,10 @@ export default {
           dataIndex: 'viewName'
         },
         {
+          title: '描述',
+          dataIndex: 'viewDesc'
+        },
+        {
           title: '上次采集开始时间',
           dataIndex: 'lastCollectTime',
           sorter: true,
