@@ -3054,6 +3054,15 @@ clipboard@^2.0.0:
     select "^1.1.2"
     tiny-emitter "^2.0.0"
 
+clipboard@^2.0.4:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/clipboard/-/clipboard-2.0.6.tgz#52921296eec0fdf77ead1749421b21c968647376"
+  integrity sha512-g5zbiixBRk/wyKakSwCKd7vQXDjFnAMGHoEyBogG/bw9kTD9GvdAvaoRR1ALcEzt3pVKxZR0pViekPMIS0QyGg==
+  dependencies:
+    good-listener "^1.2.2"
+    select "^1.1.2"
+    tiny-emitter "^2.0.0"
+
 clipboardy@^2.0.0:
   version "2.0.0"
   resolved "https://registry.npmjs.org/clipboardy/-/clipboardy-2.0.0.tgz#3fcee421fdeca4e6a62ce72b66f3eb0c42165acd"
@@ -4252,6 +4261,28 @@ ecc-jsbn@~0.1.1:
   dependencies:
     jsbn "~0.1.0"
     safer-buffer "^2.1.0"
+
+echarts-amap@1.0.0-rc.6:
+  version "1.0.0-rc.6"
+  resolved "https://registry.yarnpkg.com/echarts-amap/-/echarts-amap-1.0.0-rc.6.tgz#5782a74daee52ed44ce3f8f62577561783f09e16"
+  integrity sha1-V4KnTa7lLtRM4/j2JXdWF4PwnhY=
+
+echarts-liquidfill@^2.0.2:
+  version "2.0.6"
+  resolved "https://registry.yarnpkg.com/echarts-liquidfill/-/echarts-liquidfill-2.0.6.tgz#0668dc61d87a6262003090bd32c55aa8108c252e"
+  integrity sha512-p+AH0O9/BtwXMQQyhjJbMZo+GwRAgWG/DCyK5r27PQzpS0UWrgXu57MyEFc0A8Ub3sRuqEu08BuxwHICBkSWSQ==
+
+echarts-wordcloud@^1.1.3:
+  version "1.1.3"
+  resolved "https://registry.yarnpkg.com/echarts-wordcloud/-/echarts-wordcloud-1.1.3.tgz#07b140c8ba76b19c317b43c310f3d5dc99289ff2"
+  integrity sha512-Et8D5xEAoYkidmHun+hEH+2lF9dhCt6D0JJ390vlr2r/1zwhhZAbcL01CEvG93QcMcJpSvSPK8vRiGkTbMHRxg==
+
+echarts@^4.6.0:
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/echarts/-/echarts-4.8.0.tgz#b2c1cfb9229b13d368ee104fc8eea600b574d4c4"
+  integrity sha512-YwShpug8fWngj/RlgxDaYrLBoD+LsZUArrusjNPHpAF+is+gGe38xx4W848AwWMGoi745t3OXM52JedNrv+F6g==
+  dependencies:
+    zrender "4.3.1"
 
 editorconfig@^0.15.3:
   version "0.15.3"
@@ -7081,15 +7112,10 @@ lodash.uniq@^4.5.0:
   resolved "https://registry.npmjs.org/lodash.uniq/-/lodash.uniq-4.5.0.tgz#d0225373aeb652adc1bc82e4945339a842754773"
   integrity sha1-0CJTc662Uq3BvILklFM5qEJ1R3M=
 
-lodash@4.x, lodash@^4.17.11, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.3.0:
-  version "4.17.14"
-  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.14.tgz#9ce487ae66c96254fe20b599f21b6816028078ba"
-  integrity sha512-mmKYbW3GLuJeX+iGP+Y7Gp1AiGHGbXHCOh/jZmrawMmsE7MS4znI3RL2FsjbqOyMayHInjOeykW7PEajUk1/xw==
-
-lodash@^4.17.13, lodash@^4.17.15:
-  version "4.17.15"
-  resolved "https://registry.npm.taobao.org/lodash/download/lodash-4.17.15.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Flodash%2Fdownload%2Flodash-4.17.15.tgz#b447f6670a0455bbfeedd11392eff330ea097548"
-  integrity sha1-tEf2ZwoEVbv+7dETku/zMOoJdUg=
+lodash@4.x, lodash@^4.17.11, lodash@^4.17.13, lodash@^4.17.15, lodash@^4.17.3, lodash@^4.17.4, lodash@^4.17.5, lodash@^4.3.0:
+  version "4.17.19"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.19.tgz#e48ddedbe30b3321783c5b4301fbd353bc1e4a4b"
+  integrity sha512-JNvd8XER9GQX0v2qJgsaN/mzFCNA5BRe/j8JN9d+tWyGLSodKQHKFicdwNYzWwI3wjRnaKPsGj1XkBjx/F96DQ==
 
 log-symbols@^2.2.0:
   version "2.2.0"
@@ -7792,6 +7818,11 @@ number-is-nan@^1.0.0:
   version "1.0.1"
   resolved "https://registry.npmjs.org/number-is-nan/-/number-is-nan-1.0.1.tgz#097b602b53422a522c1afb8790318336941a011d"
   integrity sha1-CXtgK1NCKlIsGvuHkDGDNpQaAR0=
+
+numerify@1.2.9:
+  version "1.2.9"
+  resolved "https://registry.yarnpkg.com/numerify/-/numerify-1.2.9.tgz#af4696bb1d57f8d3970a615d8b0cd53d932bd559"
+  integrity sha512-X4QzQiytV5ZN3TVLhzbtFzjTarUNnaa1pgNDFqt7u7Nqhxe7FvY2eYrGt4WYHlYXDqgtfC/n/a5nJ2y0LijV8w==
 
 nwsapi@^2.0.7, nwsapi@^2.1.4:
   version "2.1.4"
@@ -10802,6 +10833,11 @@ utila@^0.4.0, utila@~0.4:
   resolved "https://registry.npmjs.org/utila/-/utila-0.4.0.tgz#8a16a05d445657a3aea5eecc5b12a4fa5379772c"
   integrity sha1-ihagXURWV6Oupe7MWxKk+lN5dyw=
 
+utils-lite@0.1.10:
+  version "0.1.10"
+  resolved "https://registry.yarnpkg.com/utils-lite/-/utils-lite-0.1.10.tgz#d2908c0482e23c31e6b082558540e7134ffad7d7"
+  integrity sha512-jlHvdtI8MyWURF/3u+ufIjf1Cs5WjN6WZl9qO8dEkZsVjaI7X5YMUhaCFzkvB69ljt6fo4Dd7V/Oj2NJOFDFOQ==
+
 utils-merge@1.0.1:
   version "1.0.1"
   resolved "https://registry.npmjs.org/utils-merge/-/utils-merge-1.0.1.tgz#9f95710f50a267947b2ccc124741c1028427e713"
@@ -10811,6 +10847,17 @@ uuid@^3.0.1, uuid@^3.3.2:
   version "3.3.2"
   resolved "https://registry.npmjs.org/uuid/-/uuid-3.3.2.tgz#1b4af4955eb3077c501c23872fc6513811587131"
   integrity sha512-yXJmeNaw3DnnKAOKJE51sL/ZaYfWJRl1pK9dr19YFCu0ObS231AB1/LbqTKRAQ5kw8A90rA6fr4riOUpTZvQZA==
+
+v-charts@^1.19.0:
+  version "1.19.0"
+  resolved "https://registry.yarnpkg.com/v-charts/-/v-charts-1.19.0.tgz#07b701800b159bd514264ffc8bf12b0405142da3"
+  integrity sha512-vm2HBUmxAsXK0ivwce9LytcpqrItDA5JSPLYVxZXtiuoyhcn80XX1/3dPJd/1GqG1OYv3jfBo1s9ra4q8GowqA==
+  dependencies:
+    echarts-amap "1.0.0-rc.6"
+    echarts-liquidfill "^2.0.2"
+    echarts-wordcloud "^1.1.3"
+    numerify "1.2.9"
+    utils-lite "0.1.10"
 
 validate-npm-package-license@^3.0.1:
   version "3.0.4"
@@ -10921,6 +10968,14 @@ vue-jest@^3.0.5:
     tsconfig "^7.0.0"
     vue-template-es2015-compiler "^1.6.0"
 
+vue-json-viewer@^2.2.8:
+  version "2.2.13"
+  resolved "https://registry.yarnpkg.com/vue-json-viewer/-/vue-json-viewer-2.2.13.tgz#cc62214056dd03b5841def1d0d81d87553b713d4"
+  integrity sha512-LbmNxbBYVErRBoZrs/wmOON0IUSvdKIuZiK9L6LbguDgUmYKuqRh5jPvbD4tHEGKf8TJcspS4OSpz8BEKy/Ysg==
+  dependencies:
+    clipboard "^2.0.4"
+    vue "^2.6.9"
+
 vue-loader@^15.7.0:
   version "15.7.0"
   resolved "https://registry.npmjs.org/vue-loader/-/vue-loader-15.7.0.tgz#27275aa5a3ef4958c5379c006dd1436ad04b25b3"
@@ -11005,6 +11060,11 @@ vue@^2.6.10:
   version "2.6.10"
   resolved "https://registry.npm.taobao.org/vue/download/vue-2.6.10.tgz#a72b1a42a4d82a721ea438d1b6bf55e66195c637"
   integrity sha1-pysaQqTYKnIepDjRtr9V5mGVxjc=
+
+vue@^2.6.9:
+  version "2.6.11"
+  resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.11.tgz#76594d877d4b12234406e84e35275c6d514125c5"
+  integrity sha512-VfPwgcGABbGAue9+sfrD4PuwFar7gPb1yl1UK1MwXoQPAw0BKSqWfoYCT/ThFrdEVWoI51dBuyCoiNU9bZDZxQ==
 
 vuex@^3.1.1:
   version "3.1.1"
@@ -11501,3 +11561,8 @@ yorkie@^2.0.0:
     is-ci "^1.0.10"
     normalize-path "^1.0.0"
     strip-indent "^2.0.0"
+
+zrender@4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/zrender/-/zrender-4.3.1.tgz#baf8aa6dc8187a2f819692d7d5f9bedfa2b90fa3"
+  integrity sha512-CeH2TpJeCdG0TAGYoPSAcFX2ogdug1K7LIn9UO/q9HWqQ54gWhrMAlDP9AwWYMUDhrPe4VeazQ4DW3msD96nUQ==
