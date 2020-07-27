@@ -109,11 +109,13 @@ export default {
       },
       confirmLoading: false,
       visible: false,
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
+      editRecord: ''
     }
   },
   methods: {
     edit (record) {
+      this.editRecord = record
       const { form: { setFieldsValue } } = this
       this.visible = true
       this.$nextTick(() => {
@@ -123,12 +125,14 @@ export default {
     handleSubmit () {
       const { form: { validateFields } } = this
       this.confirmLoading = true
+      const that = this
       validateFields((errors, values) => {
         if (!errors) {
+          values.repositoryId = that.editRecord.repositoryId
           saveRepository(values)
             .then(res => {
               if (res.code === 200) {
-                this.$message.success('新增成功')
+                this.$message.success('保存成功')
                 this.visible = false
                 this.form.resetFields()
                 this.confirmLoading = false
