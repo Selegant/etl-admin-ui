@@ -120,9 +120,6 @@
           {{ text | statusFilter }}
         </a-tag>
       </span>
-      <span slot="cronHandler" slot-scope="text">
-        {{ text | cronFilter }}
-      </span>
       <span slot="action" slot-scope="record">
         <template>
           <a-dropdown>
@@ -279,9 +276,14 @@ export default {
           scopedSlots: { customRender: 'executorHandler' }
         },
         {
+          title: '调度时间',
+          dataIndex: 'cronDesc'
+          // scopedSlots: { customRender: 'cronHandler' }
+        },
+        {
           title: 'Cron',
-          dataIndex: 'jobCron',
-          scopedSlots: { customRender: 'cronHandler' }
+          dataIndex: 'jobCron'
+          // scopedSlots: { customRender: 'cronHandler' }
         },
         {
           title: '负责人',

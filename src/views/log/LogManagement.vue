@@ -224,8 +224,8 @@ export default {
         },
         {
           title: '执行备注',
-          dataIndex: 'handleMsg',
-          scopedSlots: { customRender: 'handleMsg' }
+          dataIndex: 'executorParam',
+          scopedSlots: { customRender: 'executorParam' }
         },
         {
           title: '操作',
