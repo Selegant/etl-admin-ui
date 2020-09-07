@@ -20,3 +20,5 @@ yarn-error.log*
 *.sln
 *.sw*
 /.github/
+!/package-lock.json
+将删除 package-lock.json
