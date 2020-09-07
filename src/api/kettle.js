@@ -14,7 +14,9 @@ const api = {
   repositoryTestConnection: 'repository/testConnection',
   saveRepository: 'repository/save',
   checkRepository: 'repository/check',
-  deleteRepository: 'repository/delete'
+  deleteRepository: 'repository/delete',
+  getKettleResourceList: 'kettle/getKettleResourceList',
+  syncJobAndTrans: 'kettle/syncJobAndTrans'
 }
 
 export default api
@@ -133,6 +135,21 @@ export function saveService (parameter) {
   return axios({
     url: api.service,
     method: parameter.id === 0 ? 'post' : 'put',
+    data: parameter
+  })
+}
+
+export function getKettleResourceList (parameter) {
+  return axios({
+    url: api.getKettleResourceList + '/' + parameter,
+    method: 'get'
+  })
+}
+
+export function syncJobAndTrans (parameter) {
+  return axios({
+    url: api.syncJobAndTrans,
+    method: 'post',
     data: parameter
   })
 }

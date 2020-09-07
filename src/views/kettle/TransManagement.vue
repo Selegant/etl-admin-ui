@@ -20,6 +20,7 @@
 
     <div class="table-operator">
       <a-button type="primary" icon="reload" @click="kettleSyncJob">同步转换</a-button>
+      <a-button type="primary" icon="upload" @click="$refs.kettleResource.open(1)">同步转换（手动选择）</a-button>
       <a-button type="danger" icon="delete" @click="kettleTruncateJob">清空转换</a-button>
       <a-button type="danger" icon="close" @click="kettleJobAndTransDelete">批量删除</a-button>
       <!--      <a-button type="dashed" @click="tableOption">{{ optionAlertShow && '关闭' || '开启' }} alert</a-button>-->
@@ -64,6 +65,7 @@
     <step-by-step-modal ref="modal" @ok="handleOk"/>
     <edit-form ref="editForm" @ok="handleOk"/>
     <execute-form ref="executeForm" @ok="handleOk"/>
+    <kettle-resource-form ref="kettleResource" @ok="handleOk"/>
 
     <a-modal
       title="下次执行时间"
@@ -83,6 +85,7 @@ import EditForm from './modules/EditForm'
 import ExecuteForm from './modules/ExecuteForm'
 import { kettleTransPageList, kettleSyncTrans, kettleTruncateTrans, kettleJobAndTransDelete } from '@/api/kettle'
 import TagSelectOption from '../../components/TagSelect/TagSelectOption'
+import KettleResourceForm from '@/views/kettle/modules/KettleResourceForm'
 
 const objectTypeMap = {
   2: {
@@ -102,7 +105,8 @@ export default {
     CreateForm,
     ExecuteForm,
     EditForm,
-    StepByStepModal
+    StepByStepModal,
+    KettleResourceForm
   },
   data () {
     return {

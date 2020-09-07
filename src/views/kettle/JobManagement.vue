@@ -20,19 +20,9 @@
 
     <div class="table-operator">
       <a-button type="primary" icon="reload" @click="kettleSyncJob">同步作业</a-button>
+      <a-button type="primary" icon="upload" @click="$refs.kettleResource.open(2)">同步作业（手动选择）</a-button>
       <a-button type="danger" icon="delete" @click="kettleTruncateJob">清空作业</a-button>
       <a-button type="danger" icon="close" @click="kettleJobAndTransDelete">批量删除</a-button>
-      <!--      <a-button type="dashed" @click="tableOption">{{ optionAlertShow && '关闭' || '开启' }} alert</a-button>-->
-      <!--      <a-dropdown v-action:edit v-if="selectedRowKeys.length > 0">-->
-      <!--        <a-menu slot="overlay">-->
-      <!--          <a-menu-item key="1"><a-icon type="delete" />删除</a-menu-item>-->
-      <!--          &lt;!&ndash; lock | unlock &ndash;&gt;-->
-      <!--          <a-menu-item key="2"><a-icon type="lock" />锁定</a-menu-item>-->
-      <!--        </a-menu>-->
-      <!--        <a-button style="margin-left: 8px">-->
-      <!--          批量操作 <a-icon type="down" />-->
-      <!--        </a-button>-->
-      <!--      </a-dropdown>-->
     </div>
 
     <s-table
@@ -64,6 +54,7 @@
     <step-by-step-modal ref="modal" @ok="handleOk"/>
     <edit-form ref="editForm" @ok="handleOk"/>
     <execute-form ref="executeForm" @ok="handleOk"/>
+    <kettle-resource-form ref="kettleResource" @ok="handleOk" />
 
     <a-modal
       title="下次执行时间"
@@ -83,6 +74,7 @@ import EditForm from './modules/EditForm'
 import ExecuteForm from './modules/ExecuteForm'
 import { kettleJobPageList, kettleSyncJob, kettleTruncateJob, kettleJobAndTransDelete } from '@/api/kettle'
 import TagSelectOption from '../../components/TagSelect/TagSelectOption'
+import KettleResourceForm from '@/views/kettle/modules/KettleResourceForm'
 
 const objectTypeMap = {
   2: {
@@ -96,6 +88,7 @@ const objectTypeMap = {
 export default {
   name: 'JobManagement',
   components: {
+    KettleResourceForm,
     TagSelectOption,
     STable,
     Ellipsis,
