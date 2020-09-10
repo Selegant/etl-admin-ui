@@ -222,11 +222,11 @@ export default {
           dataIndex: 'handleCode',
           scopedSlots: { customRender: 'handleCode' }
         },
-        {
-          title: '执行备注',
-          dataIndex: 'executorParam',
-          scopedSlots: { customRender: 'executorParam' }
-        },
+        // {
+        //   title: '执行备注',
+        //   dataIndex: 'executorParam',
+        //   scopedSlots: { customRender: 'executorParam' }
+        // },
         {
           title: '操作',
           // dataIndex: 'action',

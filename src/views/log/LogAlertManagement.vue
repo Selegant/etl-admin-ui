@@ -238,11 +238,11 @@ export default {
           dataIndex: 'handleCode',
           scopedSlots: { customRender: 'handleCode' }
         },
-        {
-          title: '执行备注',
-          dataIndex: 'handleMsg',
-          scopedSlots: { customRender: 'handleMsg' }
-        },
+        // {
+        //   title: '执行备注',
+        //   dataIndex: 'handleMsg',
+        //   scopedSlots: { customRender: 'handleMsg' }
+        // },
         {
           title: '日志',
           // dataIndex: 'action',
