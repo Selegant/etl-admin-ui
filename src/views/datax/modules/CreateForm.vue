@@ -2,6 +2,7 @@
   <a-modal
     :width="600"
     :visible="visible"
+    :maskClosable="false"
     title="新增数据源"
     okText="保存"
     @ok="handleSubmit"

@@ -238,6 +238,10 @@ export default {
     },
     loginSuccess (res) {
       console.log(res)
+      if (res.code !== 200) {
+        this.isLoginError = true
+        return
+      }
       // check res.homePage define, set $router.push name res.homePage
       // Why not enter onComplete
       /*
@@ -250,7 +254,7 @@ export default {
       })
       */
       this.$router.push({ path: '/' })
-      // 延迟 1 秒显示欢迎信息
+      // // 延迟 1 秒显示欢迎信息
       setTimeout(() => {
         this.$notification.success({
           message: '欢迎',

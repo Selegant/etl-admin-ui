@@ -264,7 +264,7 @@ export default {
         }
         return getJobLogPageList(Object.assign(parameter, this.queryParam))
           .then(res => {
-            this.$store.state.unReadCount = res.data.length
+            this.$store.state.unReadCount = res.totalCount
             return res
           })
       },
@@ -327,14 +327,15 @@ export default {
             rowKeys += this.selectedRowKeys[i] + ','
           }
           this.selectedRowKeys = []
+          const that = this
           rowKeys = rowKeys.substr(0, rowKeys.length - 1)
           readBatchLog({ logIds: rowKeys })
             .then(res => {
               if (res.code === 200) {
-                this.$message.success('确认成功')
-                this.$store.state.unReadCount = this.$store.state.unReadCount - deleteSize
-                this.$refs.table.clearSelected()
-                this.handleOk()
+                that.$message.success('确认成功')
+                that.$store.state.unReadCount = that.$store.state.unReadCount - deleteSize
+                that.$refs.table.clearSelected()
+                that.handleOk()
               }
             })
         },
@@ -348,12 +349,13 @@ export default {
         okText: '确认',
         cancelText: '取消',
         onOk: () => {
+          const that = this
           readLog({ logId: record.id })
             .then(res => {
               if (res.code === 200) {
-                this.$message.success('确认成功')
-                this.$store.state.unReadCount = this.$store.state.unReadCount - 1
-                this.handleOk()
+                that.$message.success('确认成功')
+                that.$store.state.unReadCount = that.$store.state.unReadCount - 1
+                that.handleOk()
               }
             })
         },
