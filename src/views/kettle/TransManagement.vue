@@ -36,6 +36,10 @@
       <!--      </a-dropdown>-->
     </div>
 
+    <div style="text-align: center">
+      <a-spin v-if="displayLoading" size="large" />
+    </div>
+
     <s-table
       ref="table"
       size="default"
@@ -112,6 +116,7 @@ export default {
     return {
       nextTriggerTimeList: [],
       mdl: {},
+      displayLoading: false,
       // 高级搜索 展开/关闭
       advanced: false,
       // 查询参数
@@ -245,8 +250,10 @@ export default {
         title: '清空转换',
         content: '确认清空转换吗？',
         onOk: () => {
+          this.displayLoading = true
           kettleTruncateTrans()
             .then(res => {
+              this.displayLoading = false
               if (res.code === 200) {
                 this.$message.success('清空转换成功')
                 this.handleOk()
@@ -263,8 +270,10 @@ export default {
         title: '同步转换',
         content: '确认重新同步转换吗？',
         onOk: () => {
+          this.displayLoading = true
           kettleSyncTrans()
             .then(res => {
+              this.displayLoading = false
               if (res.code === 200) {
                 this.$message.success('同步转换成功')
                 this.handleOk()

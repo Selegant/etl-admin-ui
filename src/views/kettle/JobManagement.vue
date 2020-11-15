@@ -25,6 +25,10 @@
       <a-button type="danger" icon="close" @click="kettleJobAndTransDelete">批量删除</a-button>
     </div>
 
+    <div style="text-align: center">
+      <a-spin v-if="displayLoading" size="large" />
+    </div>
+
     <s-table
       ref="table"
       size="default"
@@ -101,6 +105,7 @@ export default {
     return {
       nextTriggerTimeList: [],
       mdl: {},
+      displayLoading: false,
       // 高级搜索 展开/关闭
       advanced: false,
       // 查询参数
@@ -234,8 +239,10 @@ export default {
         title: '清空作业',
         content: '确认清空作业吗？',
         onOk: () => {
+          this.displayLoading = true
           kettleTruncateJob()
             .then(res => {
+              this.displayLoading = false
               if (res.code === 200) {
                 this.$message.success('清空作业成功')
                 this.handleOk()
@@ -252,8 +259,10 @@ export default {
         title: '同步作业',
         content: '确认重新同步作业吗？',
         onOk: () => {
+          this.displayLoading = true
           kettleSyncJob()
             .then(res => {
+              this.displayLoading = false
               if (res.code === 200) {
                 this.$message.success('同步作业成功')
                 this.handleOk()

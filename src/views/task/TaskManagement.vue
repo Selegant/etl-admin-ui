@@ -3,12 +3,17 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="4" :sm="24">
-            <a-form-item label="执行器">
-              <a-select v-model="queryParam.jobGroup" placeholder="请选择">
-                <a-select-option value="-1">全部</a-select-option>
-                <a-select-option v-for="item in jobGroupList" :key="item.id" :value="item.id">{{ item.title }}</a-select-option>
-              </a-select>
+<!--          <a-col :md="4" :sm="24">-->
+<!--            <a-form-item label="执行器">-->
+<!--              <a-select v-model="queryParam.jobGroup" placeholder="请选择">-->
+<!--                <a-select-option value="-1">全部</a-select-option>-->
+<!--                <a-select-option v-for="item in jobGroupList" :key="item.id" :value="item.id">{{ item.title }}</a-select-option>-->
+<!--              </a-select>-->
+<!--            </a-form-item>-->
+<!--          </a-col>-->
+          <a-col :md="5" :sm="24">
+            <a-form-item label="任务描述">
+              <a-input v-model="queryParam.jobDesc" style="width: 100%" placeholder="请输入任务描述"/>
             </a-form-item>
           </a-col>
           <a-col :md="4" :sm="24">
@@ -22,9 +27,9 @@
           <a-col :md="4" :sm="24">
             <a-form-item label="任务类型">
               <a-select v-model="queryParam.objectType" placeholder="请选择" default-value="1">
-                <a-select-option :value="2">KETTLE 作业</a-select-option>
-                <a-select-option :value="1">KETTLE 转换</a-select-option>
-                <a-select-option :value="3">普通作业</a-select-option>
+                <a-select-option :value="2">作业</a-select-option>
+                <a-select-option :value="1">转换</a-select-option>
+<!--                <a-select-option :value="3">普通作业</a-select-option>-->
               </a-select>
             </a-form-item>
           </a-col>
@@ -34,11 +39,6 @@
                 <a-select-option value="-1">全部</a-select-option>
                 <a-select-option v-for="item in cronList" :key="item.id" :value="item.cron">{{ item.cronDesc }}</a-select-option>
               </a-select>
-            </a-form-item>
-          </a-col>
-          <a-col :md="5" :sm="24">
-            <a-form-item label="任务描述">
-              <a-input v-model="queryParam.jobDesc" style="width: 100%" placeholder="请输入任务描述"/>
             </a-form-item>
           </a-col>
           <template v-if="advanced">
@@ -84,6 +84,7 @@
     <div class="table-operator">
       <a-button type="primary" icon="plus" @click="$refs.createModal.add(jobGroupList,cronList)">新建</a-button>
       <a-button icon="form" @click="batchUpdateExecTime">批量修改执行时间</a-button>
+      <a-button icon="form" @click="batchUpdateCollectTime">批量修改采集时间</a-button>
       <a-button type="primary" icon="poweroff" @click="startBatch">批量启动任务</a-button>
       <a-button type="danger" icon="stop" @click="stopBatch">批量关闭任务</a-button>
       <!--      <a-button type="dashed" @click="tableOption">{{ optionAlertShow && '关闭' || '开启' }} alert</a-button>-->
@@ -157,6 +158,7 @@
     <task-edit-form ref="taskEditForm" @ok="handleOk"/>
     <execute-form ref="executeForm" @ok="handleOk"/>
     <cron-update-detail ref="cronUpdateDetail" @ok="handleOk"/>
+    <collect-time-update-detail ref="collectTimeUpdateDetail" @ok="handleOk"/>
 
     <a-modal
       title="下次执行时间"
@@ -175,6 +177,7 @@ import CreateForm from './modules/CreateForm'
 import TaskEditForm from './modules/TaskEditForm'
 import ExecuteForm from './modules/ExecuteForm'
 import CronUpdateDetail from './modules/CronUpdateDetail'
+import CollectTimeUpdateDetail from './modules/CollectTimeUpdateDetail'
 import { getJobInfoPageList, getJobInfoSelectList, jobStart, jobStop, jobNextTriggerTime, jobDelete, startBatch, stopBatch } from '@/api/task'
 import { getCron } from '@/api/cron'
 import TagSelectOption from '../../components/TagSelect/TagSelectOption'
@@ -243,7 +246,8 @@ export default {
     ExecuteForm,
     TaskEditForm,
     StepByStepModal,
-    CronUpdateDetail
+    CronUpdateDetail,
+    CollectTimeUpdateDetail
   },
   data () {
     return {
@@ -271,9 +275,9 @@ export default {
           scopedSlots: { customRender: 'jobDesc' }
         },
         {
-          title: '运行模式',
-          // dataIndex: 'executorHandler',
-          scopedSlots: { customRender: 'executorHandler' }
+          title: '采集开始时间',
+          dataIndex: 'currentCollectTime'
+          // scopedSlots: { customRender: 'executorHandler' }
         },
         {
           title: '调度时间',
@@ -408,6 +412,14 @@ export default {
         return
       }
       this.$refs.cronUpdateDetail.modal(this.selectedRows, this.cronList)
+      console.log(this.selectedRows)
+    },
+    batchUpdateCollectTime () {
+      if (this.selectedRowKeys.length === 0) {
+        this.$message.error('请选择需要编辑的数据')
+        return
+      }
+      this.$refs.collectTimeUpdateDetail.modal(this.selectedRows)
       console.log(this.selectedRows)
     },
     getNextTriggerTime (e) {

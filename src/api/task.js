@@ -13,7 +13,8 @@ const api = {
   jobList: 'jobinfo/list',
   batchUpdateCron: 'jobinfo/batchUpdateCron',
   startBatch: 'jobinfo/startBatch',
-  stopBatch: 'jobinfo/stopBatch'
+  stopBatch: 'jobinfo/stopBatch',
+  batchUpdateCollectTime: 'collectTime/batchUpdateCollectTime'
 }
 
 export default api
@@ -116,6 +117,14 @@ export function jobInfoAdd (parameter) {
 export function batchUpdateCron (parameter) {
   return axios({
     url: api.batchUpdateCron,
+    method: 'post',
+    data: parameter
+  })
+}
+
+export function batchUpdateCollectTime (parameter) {
+  return axios({
+    url: api.batchUpdateCollectTime,
     method: 'post',
     data: parameter
   })
