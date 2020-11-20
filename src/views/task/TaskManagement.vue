@@ -3,14 +3,14 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-<!--          <a-col :md="4" :sm="24">-->
-<!--            <a-form-item label="执行器">-->
-<!--              <a-select v-model="queryParam.jobGroup" placeholder="请选择">-->
-<!--                <a-select-option value="-1">全部</a-select-option>-->
-<!--                <a-select-option v-for="item in jobGroupList" :key="item.id" :value="item.id">{{ item.title }}</a-select-option>-->
-<!--              </a-select>-->
-<!--            </a-form-item>-->
-<!--          </a-col>-->
+          <!--          <a-col :md="4" :sm="24">-->
+          <!--            <a-form-item label="执行器">-->
+          <!--              <a-select v-model="queryParam.jobGroup" placeholder="请选择">-->
+          <!--                <a-select-option value="-1">全部</a-select-option>-->
+          <!--                <a-select-option v-for="item in jobGroupList" :key="item.id" :value="item.id">{{ item.title }}</a-select-option>-->
+          <!--              </a-select>-->
+          <!--            </a-form-item>-->
+          <!--          </a-col>-->
           <a-col :md="5" :sm="24">
             <a-form-item label="任务描述">
               <a-input v-model="queryParam.jobDesc" style="width: 100%" placeholder="请输入任务描述"/>
@@ -29,7 +29,7 @@
               <a-select v-model="queryParam.objectType" placeholder="请选择" default-value="1">
                 <a-select-option :value="2">作业</a-select-option>
                 <a-select-option :value="1">转换</a-select-option>
-<!--                <a-select-option :value="3">普通作业</a-select-option>-->
+                <a-select-option :value="3">普通作业</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -115,6 +115,10 @@
       </span>
       <span slot="executorHandler" slot-scope="record">
         {{ record.glueType }}:{{ record.executorHandler }}
+      </span>
+      <span slot="collectTime" slot-scope="text">
+        <span v-if="text!=null">{{ text }}</span>
+        <span v-else>-</span>
       </span>
       <span slot="triggerStatus" slot-scope="text">
         <a-tag :color="text===0 ? 'gray' : 'green'">
@@ -272,11 +276,14 @@ export default {
         {
           title: '任务描述',
           // dataIndex: 'jobDesc',
+          sorter: true,
           scopedSlots: { customRender: 'jobDesc' }
         },
         {
           title: '采集开始时间',
-          dataIndex: 'currentCollectTime'
+          dataIndex: 'currentCollectTime',
+          sorter: true,
+          scopedSlots: { customRender: 'collectTime' }
           // scopedSlots: { customRender: 'executorHandler' }
         },
         {

@@ -208,6 +208,7 @@ export default {
       this.confirmLoading = true
       validateFields((errors, values) => {
         if (!errors) {
+          values.record.objectType = 3
           jobInfoAdd(values.record)
             .then(res => {
               if (res.code === 200) {

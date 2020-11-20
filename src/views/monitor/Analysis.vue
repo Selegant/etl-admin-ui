@@ -1,6 +1,32 @@
 <template>
   <div class="page-header-index-wide">
     <a-row :gutter="24">
+      <a-col :sm="24" :md="6" :xl="6" :style="{ marginBottom: '24px' }">
+        <a-card title="今日采集数量" :bordered="false" >
+<!--          <span style="font-weight: bold;font-size: 20px;" slot="extra">{{ dashboardInfo.jobInfoCount }}</span>-->
+          <span style="font-weight: bold;font-size: 20px;color: #00FFFF">{{ statisticalInfo.sumWriteNum }}</span>
+        </a-card>
+      </a-col>
+      <a-col :sm="24" :md="6" :xl="6" :style="{ marginBottom: '24px' }">
+        <a-card title="今日更新数据量" :bordered="false" >
+<!--          <span style="font-weight: bold;font-size: 20px;" slot="extra">{{ dashboardInfo.jobLogCount }}</span>-->
+          <span style="font-weight: bold;font-size: 20px;color: #00BFFF">{{ statisticalInfo.sunUpdateNum }}</span>
+        </a-card>
+      </a-col>
+      <a-col :sm="24" :md="6" :xl="6" :style="{ marginBottom: '24px' }">
+        <a-card title="今日实际写入数据量" :bordered="false" >
+          <!--          <span style="font-weight: bold;font-size: 20px;" slot="extra">{{ dashboardInfo.jobLogCount }}</span>-->
+          <span style="font-weight: bold;font-size: 20px;color: #1E90FF">{{ statisticalInfo.sumOutputNum }}</span>
+        </a-card>
+      </a-col>
+      <a-col :sm="24" :md="6" :xl="6" :style="{ marginBottom: '24px' }">
+        <a-card title="今日错误数据量" :bordered="false" >
+<!--          <span style="font-weight: bold;font-size: 20px;" slot="extra">{{ dashboardInfo.jobInfoCount }}</span>-->
+          <span style="font-weight: bold;font-size: 20px;color: red">{{ statisticalInfo.sumErrorNum }}</span>
+        </a-card>
+      </a-col>
+    </a-row>
+    <a-row :gutter="24">
       <a-col :sm="24" :md="8" :xl="8" :style="{ marginBottom: '24px' }">
         <a-card title="任务数量" :bordered="false" >
           <span style="font-weight: bold;font-size: 20px;" slot="extra">{{ dashboardInfo.jobInfoCount }}</span>
@@ -66,6 +92,7 @@
 import moment from 'moment'
 import { ChartCard, MiniArea, MiniBar, MiniProgress, RankList, Bar, Trend, NumberInfo, MiniSmoothArea } from '@/components'
 import { dashboardInfo, chartInfo, monitorJobTypeInfo, monitorJobExecInfo, monitorJobStatusInfo } from '@/api/monitor'
+import { getStatistical } from '@/api/kettle'
 
 export default {
   name: 'Analysis',
@@ -83,6 +110,7 @@ export default {
   data () {
     return {
       loading: true,
+      statisticalInfo: {},
       dashboardInfo: {},
       jobExecData: {
         columns: ['日期', '成功次数', '失败次数', '正在运行数'],
@@ -146,6 +174,13 @@ export default {
       monitorJobStatusInfo().then((res) => {
         if (res.code === 200) {
           this.monitorJobStatusInfo.rows = res.content
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+      getStatistical().then((res) => {
+        if (res.code === 200) {
+          this.statisticalInfo = res.data
         } else {
           this.$message.error(res.msg)
         }

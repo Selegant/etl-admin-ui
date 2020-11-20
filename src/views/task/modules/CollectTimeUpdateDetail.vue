@@ -19,8 +19,7 @@
           format="YYYY-MM-DD HH"
           valueFormat="YYYY-MM-DD HH"
           placeholder="请选择采集开始时间"
-          @change="onChange"
-          @ok="onOk" />
+          v-model="collectTime"/>
       </div>
     </a-row>
   </a-modal>

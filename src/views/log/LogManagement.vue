@@ -11,6 +11,14 @@
               </a-select>
             </a-form-item>
           </a-col>
+          <a-col :md="4" :sm="24">
+            <a-form-item label="任务类型">
+              <a-select v-model="queryParam.jobType" placeholder="请选择">
+                <a-select-option value="0">采集任务</a-select-option>
+                <a-select-option value="1">普通任务</a-select-option>
+              </a-select>
+            </a-form-item>
+          </a-col>
           <a-col :md="5" :sm="24">
             <a-form-item label="运行状态">
               <a-select v-model="queryParam.logStatus" placeholder="请选择" default-value="1">
@@ -18,11 +26,12 @@
                 <a-select-option :value="1">成功</a-select-option>
                 <a-select-option :value="2">失败</a-select-option>
                 <a-select-option :value="3">运行中</a-select-option>
+                <a-select-option :value="4">超时</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
           <a-col :md="8" :sm="24">
-            <a-form-item label="调度时间">
+            <a-form-item label="调度开始时间">
               <a-range-picker v-model="queryParam.filterTime" :format="dateFormat"/>
             </a-form-item>
           </a-col>
@@ -63,6 +72,7 @@
       :alert="options.alert"
       :rowSelection="options.rowSelection"
       showPagination="auto"
+      :scroll="{ x: 1500 }"
     >
       <span slot="triggerCode" slot-scope="text">
         <a-tag :color="text===200 ? 'green' : 'red'">
@@ -73,6 +83,10 @@
         <template>
           <a @click="showRemark(record)">查看</a>
         </template>
+      </span>
+      <span slot="handleNum" slot-scope="text">
+        <span v-if="text!=null">{{ text }}</span>
+        <span v-else>-</span>
       </span>
       <span slot="handleTime" slot-scope="text">
         <span v-if="text!=null">{{ text }}</span>
@@ -122,6 +136,9 @@ const triggerCodeMap = {
   },
   500: {
     text: '失败'
+  },
+  600: {
+    text: '超时'
   }
 }
 
@@ -137,6 +154,9 @@ const handleCodeMap = {
   },
   502: {
     text: '失败(超时)'
+  },
+  600: {
+    text: '超时'
   }
 }
 
@@ -151,6 +171,9 @@ const handleCodeColorMap = {
     text: 'red'
   },
   502: {
+    text: 'red'
+  },
+  600: {
     text: 'red'
   }
 }
@@ -182,6 +205,7 @@ export default {
       queryParam: {
         jobGroup: '0',
         jobId: '0',
+        jobType: '0',
         logStatus: '-1',
         filterTime: []
       },
@@ -195,11 +219,13 @@ export default {
         },
         {
           title: '任务描述',
-          dataIndex: 'jobDesc'
+          dataIndex: 'jobDesc',
+          width: '200px'
         },
         {
-          title: '调度时间',
+          title: '调度开始时间',
           dataIndex: 'triggerTime',
+          width: '250px',
           scopedSlots: { customRender: 'handleTime' }
         },
         {
@@ -213,14 +239,35 @@ export default {
           scopedSlots: { customRender: 'triggerMsg' }
         },
         {
-          title: '执行时间',
+          title: '调度结束时间',
           dataIndex: 'handleTime',
+          width: '250px',
           scopedSlots: { customRender: 'handleTime' }
         },
         {
           title: '执行结果',
           dataIndex: 'handleCode',
           scopedSlots: { customRender: 'handleCode' }
+        },
+        {
+          title: '写入数量',
+          dataIndex: 'writeNum',
+          scopedSlots: { customRender: 'handleNum' }
+        },
+        {
+          title: '更新数量',
+          dataIndex: 'updateNum',
+          scopedSlots: { customRender: 'handleNum' }
+        },
+        {
+          title: '实际输出数量',
+          dataIndex: 'outputNum',
+          scopedSlots: { customRender: 'handleNum' }
+        },
+        {
+          title: '错误数量',
+          dataIndex: 'errorNum',
+          scopedSlots: { customRender: 'handleNum' }
         },
         // {
         //   title: '执行备注',
@@ -230,6 +277,7 @@ export default {
         {
           title: '操作',
           // dataIndex: 'action',
+          fixed: 'right',
           width: '150px',
           scopedSlots: { customRender: 'action' }
         }

@@ -16,7 +16,8 @@ const api = {
   checkRepository: 'repository/check',
   deleteRepository: 'repository/delete',
   getKettleResourceList: 'kettle/getKettleResourceList',
-  syncJobAndTrans: 'kettle/syncJobAndTrans'
+  syncJobAndTrans: 'kettle/syncJobAndTrans',
+  statistical: 'kettleCollection/statistical'
 }
 
 export default api
@@ -142,6 +143,13 @@ export function saveService (parameter) {
 export function getKettleResourceList (parameter) {
   return axios({
     url: api.getKettleResourceList + '/' + parameter,
+    method: 'get'
+  })
+}
+
+export function getStatistical () {
+  return axios({
+    url: api.statistical,
     method: 'get'
   })
 }
