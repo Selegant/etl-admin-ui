@@ -14,8 +14,8 @@
           <a-col :md="4" :sm="24">
             <a-form-item label="任务类型">
               <a-select v-model="queryParam.jobType" placeholder="请选择">
-                <a-select-option value="0">采集任务</a-select-option>
-                <a-select-option value="1">普通任务</a-select-option>
+                <a-select-option :value="0">采集任务</a-select-option>
+                <a-select-option :value="3">普通任务</a-select-option>
               </a-select>
             </a-form-item>
           </a-col>
@@ -320,6 +320,7 @@ export default {
   },
   created () {
     this.queryParam.jobId = this.$route.query.jobId
+    this.queryParam.jobType = this.$route.query.jobType
     this.queryParam.logStatus = this.$route.query.logStatus
     // console.log(this.$route.query)
     this.tableOption()

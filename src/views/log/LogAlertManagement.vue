@@ -198,6 +198,7 @@ export default {
         jobGroup: '0',
         jobId: '0',
         logStatus: '-1',
+        jobType: '-1',
         filterTime: []
       },
       // jobGroupList

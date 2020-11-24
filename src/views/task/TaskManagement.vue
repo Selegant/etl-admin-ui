@@ -131,12 +131,12 @@
             <a-menu slot="overlay">
               <a-menu-item @click="$refs.executeForm.execute(record)">执行一次</a-menu-item>
               <a-menu-item >
-                <router-link :to="{ name: 'LogManagement', query:{jobId:record.id}}">
+                <router-link :to="{ name: 'LogManagement', query:{jobId:record.id,jobType:record.objectType}}">
                   <span>查询日志</span>
                 </router-link>
               </a-menu-item>
               <a-menu-item >
-                <router-link :to="{ name: 'LogManagement', query:{jobId:record.id,logStatus:2}}">
+                <router-link :to="{ name: 'LogManagement', query:{jobId:record.id,logStatus:2,jobType:record.objectType}}">
                   <span style="color: red">查询错误日志</span>
                 </router-link>
               </a-menu-item>
