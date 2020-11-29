@@ -76,6 +76,31 @@ export const asyncRouterMap = [
         ]
       },
 
+      // check
+      {
+        path: '/check',
+        name: 'check',
+        component: PageView,
+        redirect: '/check/check-management',
+        meta: { title: '数据校验', icon: 'sliders', permission: [ 'table' ] },
+        children: [
+          {
+            path: '/check/check-management',
+            name: 'CheckManagement',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/check/CheckManagement'),
+            meta: { title: '原始库与生产库校验', keepAlive: true, permission: [ 'table' ] }
+          },
+          {
+            path: '/check/check-managementtwo',
+            name: 'CheckManagementTwo',
+            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+            component: () => import('@/views/check/CheckManagementTwo'),
+            meta: { title: '标准库与生产库校验', keepAlive: true, permission: [ 'table' ] }
+          }
+        ]
+      },
+
       // kettle
       {
         path: '/kettle',
