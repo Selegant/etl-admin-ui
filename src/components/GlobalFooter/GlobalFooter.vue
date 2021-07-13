@@ -14,10 +14,10 @@
     <!--      <a href="https://ant.design/">Ant Design</a>-->
     <!--      <a href="https://vue.ant.design/">Vue Antd</a>-->
     <!--    </div>-->
-    <div class="copyright">
-      Copyright
-      <a-icon type="copyright" /> 2020 <span>Selegant</span>
-    </div>
+<!--    <div class="copyright">-->
+<!--      Copyright-->
+<!--      <a-icon type="copyright" /> 2020 <span>Selegant</span>-->
+<!--    </div>-->
   </div>
 </template>
 

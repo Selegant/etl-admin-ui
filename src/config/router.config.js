@@ -77,29 +77,29 @@ export const asyncRouterMap = [
       },
 
       // check
-      {
-        path: '/check',
-        name: 'check',
-        component: PageView,
-        redirect: '/check/check-management',
-        meta: { title: '数据校验', icon: 'sliders', permission: [ 'table' ] },
-        children: [
-          {
-            path: '/check/check-management',
-            name: 'CheckManagement',
-            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
-            component: () => import('@/views/check/CheckManagement'),
-            meta: { title: '原始库与生产库校验', keepAlive: true, permission: [ 'table' ] }
-          },
-          {
-            path: '/check/check-managementtwo',
-            name: 'CheckManagementTwo',
-            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
-            component: () => import('@/views/check/CheckManagementTwo'),
-            meta: { title: '标准库与生产库校验', keepAlive: true, permission: [ 'table' ] }
-          }
-        ]
-      },
+      // {
+      //   path: '/check',
+      //   name: 'check',
+      //   component: PageView,
+      //   redirect: '/check/check-management',
+      //   meta: { title: '数据校验', icon: 'sliders', permission: [ 'table' ] },
+      //   children: [
+      //     {
+      //       path: '/check/check-management',
+      //       name: 'CheckManagement',
+      //       hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+      //       component: () => import('@/views/check/CheckManagement'),
+      //       meta: { title: '原始库与生产库校验', keepAlive: true, permission: [ 'table' ] }
+      //     },
+      //     {
+      //       path: '/check/check-managementtwo',
+      //       name: 'CheckManagementTwo',
+      //       hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+      //       component: () => import('@/views/check/CheckManagementTwo'),
+      //       meta: { title: '标准库与生产库校验', keepAlive: true, permission: [ 'table' ] }
+      //     }
+      //   ]
+      // },
 
       // kettle
       {
@@ -140,30 +140,30 @@ export const asyncRouterMap = [
         ]
       },
 
-      // datax
-      {
-        path: '/datax',
-        name: 'datax',
-        component: PageView,
-        redirect: '/datax/dataSource-management',
-        meta: { title: 'DATAX', icon: 'close', permission: [ 'datax' ] },
-        children: [
-          {
-            path: '/datax/dataSource-management',
-            name: 'DataSourceManagement',
-            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
-            component: () => import('@/views/datax/DataSourceManagement'),
-            meta: { title: '数据源管理', keepAlive: true, permission: [ 'datax' ] }
-          },
-          {
-            path: '/datax/datax-job-management',
-            name: 'DataxJobManagement',
-            hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
-            component: () => import('@/views/datax/DataxJobManagement'),
-            meta: { title: 'DataX任务', keepAlive: true, permission: [ 'datax' ] }
-          }
-        ]
-      },
+      // // datax
+      // {
+      //   path: '/datax',
+      //   name: 'datax',
+      //   component: PageView,
+      //   redirect: '/datax/dataSource-management',
+      //   meta: { title: 'DATAX', icon: 'close', permission: [ 'datax' ] },
+      //   children: [
+      //     {
+      //       path: '/datax/dataSource-management',
+      //       name: 'DataSourceManagement',
+      //       hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+      //       component: () => import('@/views/datax/DataSourceManagement'),
+      //       meta: { title: '数据源管理', keepAlive: true, permission: [ 'datax' ] }
+      //     },
+      //     {
+      //       path: '/datax/datax-job-management',
+      //       name: 'DataxJobManagement',
+      //       hideChildrenInMenu: true, // 强制显示 MenuItem 而不是 SubMenu
+      //       component: () => import('@/views/datax/DataxJobManagement'),
+      //       meta: { title: 'DataX任务', keepAlive: true, permission: [ 'datax' ] }
+      //     }
+      //   ]
+      // },
 
       // account
       {
