@@ -59,7 +59,7 @@
       rowKey="key"
       :columns="columns"
       :data="loadData"
-      showPagination="auto"
+      showPagination="true"
     >
       <span slot="handleNum" slot-scope="text">
         <span v-if="text!=null">{{ text }}</span>

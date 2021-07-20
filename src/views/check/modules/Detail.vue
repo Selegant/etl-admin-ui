@@ -13,7 +13,7 @@
         rowKey="key"
         :columns="columns"
         :data="loadData"
-        showPagination="auto"
+        showPagination="true"
       >
       </s-table>
     </div>
