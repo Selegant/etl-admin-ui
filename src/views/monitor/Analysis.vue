@@ -3,13 +3,13 @@
     <a-row :gutter="24">
       <a-col :sm="24" :md="6" :xl="6" :style="{ marginBottom: '24px' }">
         <a-card title="今日采集数量" :bordered="false" >
-<!--          <span style="font-weight: bold;font-size: 20px;" slot="extra">{{ dashboardInfo.jobInfoCount }}</span>-->
+          <!--          <span style="font-weight: bold;font-size: 20px;" slot="extra">{{ dashboardInfo.jobInfoCount }}</span>-->
           <span style="font-weight: bold;font-size: 20px;color: #00FFFF">{{ statisticalInfo.sumWriteNum }}</span>
         </a-card>
       </a-col>
       <a-col :sm="24" :md="6" :xl="6" :style="{ marginBottom: '24px' }">
         <a-card title="今日更新数据量" :bordered="false" >
-<!--          <span style="font-weight: bold;font-size: 20px;" slot="extra">{{ dashboardInfo.jobLogCount }}</span>-->
+          <!--          <span style="font-weight: bold;font-size: 20px;" slot="extra">{{ dashboardInfo.jobLogCount }}</span>-->
           <span style="font-weight: bold;font-size: 20px;color: #00BFFF">{{ statisticalInfo.sunUpdateNum }}</span>
         </a-card>
       </a-col>
@@ -21,7 +21,7 @@
       </a-col>
       <a-col :sm="24" :md="6" :xl="6" :style="{ marginBottom: '24px' }">
         <a-card title="今日错误数据量" :bordered="false" >
-<!--          <span style="font-weight: bold;font-size: 20px;" slot="extra">{{ dashboardInfo.jobInfoCount }}</span>-->
+          <!--          <span style="font-weight: bold;font-size: 20px;" slot="extra">{{ dashboardInfo.jobInfoCount }}</span>-->
           <span style="font-weight: bold;font-size: 20px;color: red">{{ statisticalInfo.sumErrorNum }}</span>
         </a-card>
       </a-col>
@@ -40,7 +40,7 @@
         </a-card>
       </a-col>
       <a-col :sm="24" :md="8" :xl="8" :style="{ marginBottom: '24px' }">
-        <a-card title="作业状态" :bordered="false" >
+        <a-card title="任务状态" :bordered="false" >
           <span style="font-weight: bold;font-size: 20px;" slot="extra">{{ dashboardInfo.jobInfoCount }}</span>
           <ve-pie :data="monitorJobStatusInfo"></ve-pie>
         </a-card>
@@ -57,7 +57,11 @@
               <a @click="loadChat('month')">本月</a>
               <a @click="loadChat('year')">本年</a>
             </div>
-            <a-range-picker :style="{width: '256px'}" @change="loadChatByDate" :disabledDate="disabledDate"/>
+            <a-range-picker
+              :style="{width: '256px'}"
+              @change="loadChatByDate"
+              :disabledDate="disabledDate"
+              :value="[this.$moment(this.startDate, 'YYYY-MM-DD'), this.$moment(this.endDate, 'YYYY-MM-DD')]"/>
           </div>
           <a-tab-pane loading="true" tab="运行监控" key="1">
             <a-row>
@@ -112,6 +116,8 @@ export default {
       loading: true,
       statisticalInfo: {},
       dashboardInfo: {},
+      startDate: moment().subtract('days', 8).format('YYYY-MM-DD'),
+      endDate: moment().subtract('days', -1).format('YYYY-MM-DD'),
       jobExecData: {
         columns: ['日期', '成功次数', '失败次数', '正在运行数'],
         rows: []
@@ -188,22 +194,22 @@ export default {
       this.loading = false
     },
     loadChat (param) {
-      let startDate = ''
-      let endDate = ''
+      // let startDate = ''
+      // let endDate = ''
       if (param === 'month') {
-        startDate = moment().startOf('month').format('YYYY-MM-DD')
-        endDate = moment().startOf('day').format('YYYY-MM-DD')
+        this.startDate = moment().startOf('month').format('YYYY-MM-DD')
+        this.endDate = moment().startOf('day').format('YYYY-MM-DD')
       } else if (param === 'week') {
-        startDate = moment().startOf('week').format('YYYY-MM-DD')
-        endDate = moment().startOf('day').format('YYYY-MM-DD')
+        this.startDate = moment().startOf('week').format('YYYY-MM-DD')
+        this.endDate = moment().startOf('day').format('YYYY-MM-DD')
       } else if (param === 'year') {
-        startDate = moment().startOf('year').format('YYYY-MM-DD')
-        endDate = moment().startOf('day').format('YYYY-MM-DD')
+        this.startDate = moment().startOf('year').format('YYYY-MM-DD')
+        this.endDate = moment().startOf('day').format('YYYY-MM-DD')
       } else if (param === '10') {
-        startDate = moment().subtract('days', 8).format('YYYY-MM-DD')
-        endDate = moment().subtract('days', -1).format('YYYY-MM-DD')
+        this.startDate = moment().subtract('days', 8).format('YYYY-MM-DD')
+        this.endDate = moment().subtract('days', -1).format('YYYY-MM-DD')
       }
-      chartInfo({ 'startDate': startDate, 'endDate': endDate }).then((res) => {
+      chartInfo({ 'startDate': this.startDate, 'endDate': this.endDate }).then((res) => {
         if (res.code === 200) {
           this.jobExecData.rows = res.content
         } else {
