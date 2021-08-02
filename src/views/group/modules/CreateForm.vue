@@ -14,7 +14,7 @@
           :labelCol="labelCol"
           :wrapperCol="wrapperCol"
         >
-          <a-input v-decorator="['appName', {rules: [{required: true, min:4, max:64, message: '请输入至少4个字符的AppName！'}]}]" />
+          <a-input v-decorator="['appName', {rules: [{required: true, min:4, max:64, message: '请输入AppName(4-64位)！'}]}]" />
         </a-form-item>
         <a-form-item
           label="名称"
@@ -75,7 +75,9 @@ export default {
   },
   methods: {
     add () {
+      this.form.resetFields()
       this.visible = true
+      this.textareaDisabled = true
     },
     handleSubmit () {
       const { form: { validateFields } } = this
