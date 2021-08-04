@@ -109,14 +109,20 @@ export default {
       },
       confirmLoading: false,
       visible: false,
-      form: this.$form.createForm(this)
+      form: this.$form.createForm(this),
+      testDataSourceStatus: false
     }
   },
   methods: {
     add () {
       this.visible = true
+      this.form.resetFields()
     },
     handleSubmit () {
+      if (!this.testDataSourceStatus) {
+        this.$message.warning('请先测试连接成功再保存')
+        return
+      }
       const { form: { validateFields } } = this
       this.confirmLoading = true
       validateFields((errors, values) => {
@@ -149,8 +155,9 @@ export default {
               if (res.code === 200) {
                 this.$message.success('连接成功')
                 this.confirmLoading = false
+                this.testDataSourceStatus = true
               } else {
-                this.$message.error(res.msg)
+                this.$message.error('测试连接失败')
                 this.confirmLoading = false
               }
             })
