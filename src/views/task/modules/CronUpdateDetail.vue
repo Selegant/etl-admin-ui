@@ -1,6 +1,6 @@
 <template>
   <a-modal
-    title="批量修改执行时间"
+    title="批量修改调度时间"
     :width="1200"
     :visible="visible"
     :confirmLoading="confirmLoading"
@@ -46,6 +46,7 @@ export default {
       this.jobList = jobList
       this.cronList = cronList
       this.visible = true
+      this.cron = ''
     },
     updateExecTime () {
       let rowKeys = ''

@@ -43,7 +43,7 @@
       :data="loadData"
       :alert="options.alert"
       :rowSelection="options.rowSelection"
-      showPagination="auto"
+      showPagination="true"
     >
       <span slot="jobDesc" slot-scope="record">
         {{ record.jobDesc }}
