@@ -143,7 +143,7 @@ export default {
           kettleJobGenerateParams(values.job)
             .then(res => {
               if (res.code === 200) {
-                this.$message.success('作业修改成功')
+                this.$message.success('转换修改成功')
                 this.visible = false
                 this.$emit('ok')
               } else {
