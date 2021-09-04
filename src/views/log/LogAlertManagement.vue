@@ -3,14 +3,14 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="4" :sm="24">
-            <a-form-item label="执行器">
-              <a-select v-model="queryParam.jobGroup" placeholder="请选择">
-                <a-select-option value="0">全部</a-select-option>
-                <a-select-option v-for="item in jobGroupList" :key="item.id" :value="item.id">{{ item.title }}</a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
+<!--          <a-col :md="4" :sm="24">-->
+<!--            <a-form-item label="执行器">-->
+<!--              <a-select v-model="queryParam.jobGroup" placeholder="请选择">-->
+<!--                <a-select-option value="0">全部</a-select-option>-->
+<!--                <a-select-option v-for="item in jobGroupList" :key="item.id" :value="item.id">{{ item.title }}</a-select-option>-->
+<!--              </a-select>-->
+<!--            </a-form-item>-->
+<!--          </a-col>-->
           <a-col :md="6" :sm="24">
             <a-form-item label="任务列表">
               <a-select
@@ -75,7 +75,7 @@
       :data="loadData"
       :alert="options.alert"
       :rowSelection="options.rowSelection"
-      showPagination="auto"
+      showPagination="true"
     >
       <span slot="triggerCode" slot-scope="text">
         <a-tag :color="text===200 ? 'green' : 'red'">
@@ -462,14 +462,16 @@ export default {
       this.queryParam = {
         jobGroup: '0',
         jobId: '0',
-        logStatus: '-1',
+        logStatus: '2',
+        jobType: '-1',
+        readMark: '1',
         filterTime: []
       }
     },
     startPolling () {
       this.listTimer = window.setInterval(() => {
         setTimeout(this.handleOk(), 0)
-      }, 3000)
+      }, 10000)
     }
   }
 }

@@ -27,7 +27,7 @@
       :data="loadData"
       :alert="options.alert"
       :rowSelection="options.rowSelection"
-      showPagination="auto"
+      showPagination="true"
     >
       <span slot="addressType" slot-scope="text">
         {{ text | addressTypeFilter }}
@@ -38,8 +38,8 @@
       </span>
       <span slot="action" slot-scope="record">
         <template>
-          <a-button type="primary" size="small" icon="form" @click="edit(record)">编辑</a-button>
-          <a-divider type="vertical" />
+<!--          <a-button type="primary" size="small" icon="form" @click="edit(record)">编辑</a-button>-->
+<!--          <a-divider type="vertical" />-->
           <a-button type="danger" size="small" icon="delete" @click="del(record)">删除</a-button>
         </template>
       </span>
@@ -102,11 +102,13 @@ export default {
         },
         {
           title: 'AppName',
-          dataIndex: 'appName'
+          dataIndex: 'appName',
+          ellipsis: true
         },
         {
           title: '名称',
-          dataIndex: 'title'
+          dataIndex: 'title',
+          ellipsis: true
         },
         {
           title: '注册方式',
@@ -155,7 +157,7 @@ export default {
   created () {
     this.queryParam.id = this.$route.query.id
     this.tableOption()
-    this.startPolling()
+    // this.startPolling()
   },
   beforeDestroy () {
     if (this.listTimer) {
