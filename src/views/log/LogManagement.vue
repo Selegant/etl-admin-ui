@@ -3,14 +3,14 @@
     <div class="table-page-search-wrapper">
       <a-form layout="inline">
         <a-row :gutter="48">
-          <a-col :md="4" :sm="24">
-            <a-form-item label="执行器">
-              <a-select v-model="queryParam.jobGroup" placeholder="请选择">
-                <a-select-option value="0">全部</a-select-option>
-                <a-select-option v-for="item in jobGroupList" :key="item.id" :value="item.id">{{ item.title }}</a-select-option>
-              </a-select>
-            </a-form-item>
-          </a-col>
+<!--          <a-col :md="4" :sm="24">-->
+<!--            <a-form-item label="执行器">-->
+<!--              <a-select v-model="queryParam.jobGroup" placeholder="请选择">-->
+<!--                <a-select-option value="0">全部</a-select-option>-->
+<!--                <a-select-option v-for="item in jobGroupList" :key="item.id" :value="item.id">{{ item.title }}</a-select-option>-->
+<!--              </a-select>-->
+<!--            </a-form-item>-->
+<!--          </a-col>-->
           <a-col :md="4" :sm="24">
             <a-form-item label="任务类型">
               <a-select v-model="queryParam.jobType" placeholder="请选择">
@@ -32,7 +32,7 @@
           </a-col>
           <a-col :md="8" :sm="24">
             <a-form-item label="调度开始时间">
-              <a-range-picker v-model="queryParam.filterTime" :format="dateFormat"/>
+              <a-range-picker v-model="queryParam.filterTime" :format="dateFormat" :valueFormat="dateFormat"/>
             </a-form-item>
           </a-col>
           <template v-if="advanced">
@@ -42,6 +42,7 @@
             <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
               <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
               <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
+              <a-button style="margin-left: 8px" @click="$refs.table.refresh(true)">刷新</a-button>
             </span>
           </a-col>
         </a-row>
@@ -71,9 +72,17 @@
       :data="loadData"
       :alert="options.alert"
       :rowSelection="options.rowSelection"
-      showPagination="auto"
-      :scroll="{ x: 1500 }"
+      showPagination="true"
+      :scroll="{ x: 2000 }"
     >
+      <span slot="executorHandler" slot-scope="text">
+        <a-tag v-if="text==='kettleJobHandler'||text==='kettleTransHandler'" :color="text==='kettleJobHandler'||text==='kettleTransHandler'? 'green' : 'blue'">
+          采集任务
+        </a-tag>
+        <a-tag v-if="text!=='kettleJobHandler'&&text!=='kettleTransHandler'" :color="text!=='kettleJobHandler'&&text!=='kettleTransHandler' ? 'blue' : 'green'">
+          普通任务
+        </a-tag>
+      </span>
       <span slot="triggerCode" slot-scope="text">
         <a-tag :color="text===200 ? 'green' : 'red'">
           {{ text | triggerCodeFilter }}
@@ -220,7 +229,14 @@ export default {
         {
           title: '任务描述',
           dataIndex: 'jobDesc',
-          width: '200px'
+          width: '250px',
+          ellipsis: true
+        },
+        {
+          title: '任务类型',
+          dataIndex: 'executorHandler',
+          width: '100px',
+          scopedSlots: { customRender: 'executorHandler' }
         },
         {
           title: '调度开始时间',
@@ -320,12 +336,12 @@ export default {
   },
   created () {
     this.queryParam.jobId = this.$route.query.jobId
-    this.queryParam.jobType = this.$route.query.jobType
+    this.queryParam.jobType = this.$route.query.jobType === 3 ? 3 : 0
     this.queryParam.logStatus = this.$route.query.logStatus
     // console.log(this.$route.query)
     this.tableOption()
     this.loadSelectInfo()
-    this.startPolling()
+    // this.startPolling()
     // getRoleList({ t: new Date() })
   },
   beforeDestroy () {
@@ -425,15 +441,16 @@ export default {
     resetSearchForm () {
       this.queryParam = {
         jobGroup: '0',
+        jobType: 0,
         jobId: '0',
-        logStatus: '-1',
+        logStatus: -1,
         filterTime: []
       }
     },
     startPolling () {
       this.listTimer = window.setInterval(() => {
         setTimeout(this.handleOk(), 0)
-      }, 3000)
+      }, 10000)
     }
   }
 }
