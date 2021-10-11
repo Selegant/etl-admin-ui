@@ -4,8 +4,8 @@
       <a-form layout="inline">
         <a-row :gutter="48">
           <a-col :md="6" :sm="24">
-            <a-form-item label="作业名称">
-              <a-input v-model="queryParam.name" style="width: 100%" placeholder="请输入作业名称"/>
+            <a-form-item label="资源库名称">
+              <a-input v-model="queryParam.repositoryName" style="width: 100%" placeholder="请输入资源库名称"/>
             </a-form-item>
           </a-col>
           <a-col :md="!advanced && 8 || 24" :sm="24">
@@ -43,7 +43,7 @@
       :data="loadData"
       :alert="options.alert"
       :rowSelection="options.rowSelection"
-      showPagination="auto"
+      showPagination="true"
     >
       <span slot="jobDesc" slot-scope="record">
         {{ record.jobDesc }}
@@ -194,14 +194,14 @@ export default {
   methods: {
     del (record) {
       this.$confirm({
-        title: '删除作业',
-        content: '确认删除作业吗？',
+        title: '删除资源库',
+        content: '确认删除资源库吗？',
         onOk: () => {
           const rowKeys = record.repositoryId
           deleteRepository({ id: rowKeys })
             .then(res => {
               if (res.code === 200) {
-                this.$message.success('删除资源成功')
+                this.$message.success('删除资源库成功')
                 this.handleOk()
               } else {
                 this.$message.error(res.msg)
