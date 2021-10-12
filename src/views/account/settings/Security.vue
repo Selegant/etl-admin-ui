@@ -80,6 +80,7 @@ export default {
   methods: {
     openUpdatePassword () {
       this.visible = true
+      this.form.resetFields()
     },
     handleSubmit () {
       const { form: { validateFields } } = this
