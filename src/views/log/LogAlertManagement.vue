@@ -45,6 +45,7 @@
             <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
               <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
               <a-button style="margin-left: 8px" @click="resetSearchForm">重置</a-button>
+              <a-button style="margin-left: 8px" @click="$refs.table.refresh(true)">刷新</a-button>
               <a-button type="danger" style="margin-left: 8px" @click="allConfirm">一键确认</a-button>
             </span>
           </a-col>
@@ -301,13 +302,13 @@ export default {
     // console.log(this.$route.query)
     this.tableOption()
     this.loadSelectInfo()
-    this.startPolling()
+    // this.startPolling()
     // getRoleList({ t: new Date() })
   },
   beforeDestroy () {
-    if (this.listTimer) {
-      window.clearInterval(this.listTimer)
-    }
+    // if (this.listTimer) {
+    //   window.clearInterval(this.listTimer)
+    // }
   },
   methods: {
     allConfirm () {
