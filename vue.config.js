@@ -92,6 +92,7 @@ const vueConfig = {
       '/api': {
         // target: 'https://mock.ihx.me/mock/5baf3052f7da7e07e04a5116/antd-pro',
         target: 'http://127.0.0.1:8082',
+        // target: 'http://192.168.10.23:8082', // 薛云鹏
         pathRewrite: {
           '^/api': ''
         },

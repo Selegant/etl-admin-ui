@@ -12,6 +12,7 @@
             <span class="table-page-search-submitButtons" :style="advanced && { float: 'right', overflow: 'hidden' } || {} ">
               <a-button type="primary" @click="$refs.table.refresh(true)">查询</a-button>
               <a-button style="margin-left: 8px" @click="() => queryParam = {}">重置</a-button>
+              <a-button @click="exportClick" style="margin-left:8px;">导出时间</a-button>
             </span>
           </a-col>
         </a-row>
@@ -153,6 +154,9 @@ export default {
     // getRoleList({ t: new Date() })
   },
   methods: {
+    exportClick () {
+      location.href = '/api/jobinfo/table_schedule_time'
+    },
     handleTableChange (pagination, sorter) {
       console.log(pagination)
       console.log(sorter)
