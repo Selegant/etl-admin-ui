@@ -4,8 +4,8 @@
       <div class="top">
         <div class="header">
           <a href="/">
-            <img src="~@/assets/logo.png" class="logo" alt="logo">
-            <span class="title">ETL Management</span>
+            <img src="~@/assets/wowjoy-logo-black.svg" class="logo" alt="logo">
+            <span class="title">数据采集平台</span>
           </a>
         </div>
         <div class="desc">
@@ -92,7 +92,7 @@ export default {
           }
 
           .logo {
-            height: 50px;
+            height: 43px;
             vertical-align: top;
             margin-right: 16px;
             border-style: none;

@@ -4,7 +4,7 @@
       <a-col :sm="24" :md="6" :xl="6" :style="{ marginBottom: '24px' }">
         <a-card title="今日采集数量" :bordered="false" >
           <!--          <span style="font-weight: bold;font-size: 20px;" slot="extra">{{ dashboardInfo.jobInfoCount }}</span>-->
-          <span style="font-weight: bold;font-size: 20px;color: #00FFFF">{{ statisticalInfo.sumWriteNum }}</span>
+          <span style="font-weight: bold;font-size: 20px;color: #00FFFF">{{ statisticalInfo.sumOutputNum+statisticalInfo.sunUpdateNum }}</span>
         </a-card>
       </a-col>
       <a-col :sm="24" :md="6" :xl="6" :style="{ marginBottom: '24px' }">
