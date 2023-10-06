@@ -44,7 +44,7 @@ To begin using the Data Support Platform, follow these steps:
 
 ## Contact
 
-For any questions, issues, or support related to the Data Support Platform, please contact our team at [contact@email.com](mailto:contact@email.com).
+For any questions, issues, or support related to the Data Support Platform, please contact our team at [1228579928@qq.com](mailto:1228579928@qq.com).
 
 ## License
 
