@@ -48,4 +48,4 @@ For any questions, issues, or support related to the Data Support Platform, plea
 
 ## License
 
-This project is licensed under the [MIT License](LICENSE.md).
+This project is licensed under the [MIT License](LICENSE).
