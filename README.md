@@ -47,7 +47,8 @@ To begin using the Data Support Platform, follow these steps:
 For any questions, issues, or support related to the Data Support Platform, please contact our team at [1228579928@qq.com](mailto:1228579928@qq.com).
 
 ## 赞助
-![JetBrains Logo (Main) logo](https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.png)
+<img src="https://resources.jetbrains.com/storage/products/company/brand/logos/jb_beam.svg" alt="JetBrains Logo" width="200" height="100" />
+
 
 ## License
 
